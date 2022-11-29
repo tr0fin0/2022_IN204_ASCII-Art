@@ -1,1 +1,1 @@
-# 2022_IN204_rayTracer
+# ASCII Art Generator
