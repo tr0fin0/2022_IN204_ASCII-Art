@@ -11,3 +11,11 @@ Accepted input:
 - File GIF in GIF;
 - File Video in MP4;
 
+
+## Installation
+---
+Use ... to install OpenCV:
+```bash
+pip install opencv
+```
+
