@@ -28,10 +28,10 @@ Code structure:
 
     .
     ├── ...
-    ├── test                    # Test files (alternatively `spec` or `tests`)
-    │   ├── benchmarks          # Load and stress tests
-    │   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
-    │   └── unit                # Unit tests
+    ├── main.cpp                # main file
+    ├── images                  
+    │   ├── ...
+    │   └── readme.png          # README.md main image
     └── ...
 
 ## Support
