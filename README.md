@@ -37,3 +37,11 @@ Code structure:
     │   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
     │   └── unit                # Unit tests
     └── ...
+
+## Support
+---
+Lorem Ipsum
+> **Q:** question?
+>
+> **A:** answer.
+
