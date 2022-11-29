@@ -46,3 +46,16 @@ Lorem Ipsum
 > **A:** answer.
 
 ## Roadmap
+---
+Lorem Ipsum
+
+## Authors and Acknowledment
+---
+- [Guilherme TROFINO](https://github.com/tr0fin0)
+- [Gustavo JODAR](https://github.com/Gustavo-Jodar)
+
+We greatly appreciate our [IN204](https://synapses.ensta-paris.fr/catalogue/2020-2021/ue/3722/IN204-oriente-objet-programmation-et-genie-logiciel?from=D2) teachers at [ENSTA](https://www.ensta-paris.fr/):
+- Bruno Monsuez
+- Jean-Baptiste Laurent
+
+More information in the [webpage](https://perso.ensta-paris.fr/~bmonsuez/Cours/doku.php?id=in204).
