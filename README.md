@@ -2,8 +2,9 @@
 
 
 ## Description
----
 The project wants to generate ASCII Art from different inputs with C++ by using [OpenCV Library](https://opencv.org/).
+
+![alt text](images/readme.png)
 
 ### Features
 Accepted input:
@@ -20,7 +21,6 @@ pip install opencv
 ```
 
 ## Usage
----
 Lorem Ipsum
 ```cpp
 int main(void) {
@@ -39,7 +39,6 @@ Code structure:
     └── ...
 
 ## Support
----
 Lorem Ipsum
 > **Q:** question?
 >
@@ -61,5 +60,4 @@ We greatly appreciate our [IN204](https://synapses.ensta-paris.fr/catalogue/2020
 More information in the [webpage](https://perso.ensta-paris.fr/~bmonsuez/Cours/doku.php?id=in204).
 
 ## License
----
 Lorem Ipsum [License](https://choosealicense.com/licenses/)
