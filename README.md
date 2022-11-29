@@ -14,11 +14,7 @@ Accepted input:
 
 
 ## Installation
----
-Use ... to install OpenCV:
-```bash
-pip install opencv
-```
+Follow the [install OpenCV](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html) documentation.
 
 ## Usage
 Lorem Ipsum
