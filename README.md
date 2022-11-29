@@ -59,3 +59,7 @@ We greatly appreciate our [IN204](https://synapses.ensta-paris.fr/catalogue/2020
 - Jean-Baptiste Laurent
 
 More information in the [webpage](https://perso.ensta-paris.fr/~bmonsuez/Cours/doku.php?id=in204).
+
+## License
+---
+Lorem Ipsum [License](https://choosealicense.com/licenses/)
