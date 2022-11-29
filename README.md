@@ -19,3 +19,21 @@ Use ... to install OpenCV:
 pip install opencv
 ```
 
+## Usage
+---
+Lorem Ipsum
+```cpp
+int main(void) {
+
+    return 0;
+};
+```
+Code structure:
+
+    .
+    ├── ...
+    ├── test                    # Test files (alternatively `spec` or `tests`)
+    │   ├── benchmarks          # Load and stress tests
+    │   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
+    │   └── unit                # Unit tests
+    └── ...
