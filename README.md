@@ -41,8 +41,20 @@ Lorem Ipsum
 > **A:** answer.
 
 ## Roadmap
----
-Lorem Ipsum
+This project had incremental goals:
+1. Open a file in:
+   - PNG;
+   - GIF;
+   - MP4;
+    
+    And converting into an ASCII Art;
+
+2. Use real-time input from the computer's webcam;
+
+3. Save into a `.txt` with:
+   - Custom size;
+   - *WhatsApp*; 
+   - *Telegram*;
 
 ## Authors and Acknowledment
 ---
