@@ -5,8 +5,7 @@
 #include <chrono>
 #include <thread>
 #include <vector>
-
-std::vector<std::string> imageFormation;
+#include <memory>
 
 class Converter
 {
@@ -22,8 +21,6 @@ private:
 
     //cv::Mat image format of OpenCV
     cv::Mat img;
-
-    std::string textResult;
 
 public:
     //Converter constructor
@@ -43,7 +40,7 @@ public:
     
     //naive converter image -> ASCII function
     //receiver cv::Mat to convert, and the ASCIIGrayScale -> "shorter" | "full"
-    std::string naiveConvert(cv::Mat img, std::string grayScaleType);
+    std::unique_ptr<char[]> naiveConvert(cv::Mat img, int grayScaleType);
 
     //setter image -> cv::Mat
     void setImage(cv::Mat img);
@@ -61,12 +58,15 @@ public:
 
     //function that converts a slice of the image = from -> to
     //used for parallelism 
-    static void convertSlice(cv::Mat img, std::string grayScaleType, int from_x, int to_x, int threadNumber);
+    static void convertSlice(const cv::Mat img, char *textResult ,int grayScaleType, int from_x, int to_x);
 
     //converter paralleized, image -> ASCII function
-    //receive cv::Mat to convert, and the ASCIIGrayScale -> "shorter" | "full" and the number of threads to
-    std::string parallelConvert(cv::Mat img, std::string grayScaleType, int numThreads);
+    //receive cv::Mat to convert, and the ASCIIGrayScale -> 1 = "shorter" | 2 = "full" and the number of threads to use in the conversion
+    std::unique_ptr<char[]> parallelConvert(const cv::Mat &img, int grayScaleType, int numThreads);
 
+    //function to show in the terminal the ASCII image
+    void print_ASCII();
+    void print_ASCII(std::unique_ptr<char[]> textResult);
 };
 
 void Converter::setImage(cv::Mat img){
@@ -90,32 +90,36 @@ std::string Converter::getExtention(std::string filename){
     return filename.substr(pos + 1, filename.size() - pos);
 }
 
-std::string Converter::naiveConvert(cv::Mat img, std::string grayscaleType = "shorter" ){
+std::unique_ptr<char[]> Converter::naiveConvert(cv::Mat img, int grayscaleType = 1){
     const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
     const std::string shorterGrayScaleASCII =  " .:-=+*#%@";
                                                 
-    
+    auto textResult = std::make_unique<char[]>(img.rows * img.cols);
+
     //getting the max and min pixel values of a image
     double maxValue, minValue;
     cv::minMaxLoc(img, &minValue, &maxValue);
 
     //converting each pixel of the image to a ASCII character based on its brightness
-    std::string text = "";
     for(int i = 0 ; i < img.rows; i++){
         for(int j = 0 ; j < img.cols; j++){
-
-            if(grayscaleType == "shorter"){
-                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
-                text.push_back(shorterGrayScaleASCII[index]);
+            if(j == img.cols - 1){
+                textResult[(img.cols*i) + j] = '\n';
             }
             else{
-                int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
-                text.push_back(standardGrayScaleASCII[index]);
+                if(grayscaleType){
+                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                textResult[(img.cols*i) + j] = shorterGrayScaleASCII[index];
+                }
+                else{
+                    int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                    textResult[(img.cols*i) + j] = standardGrayScaleASCII[index];
+                }
             }
         }
-        text.push_back('\n');
     }
-    return text;
+
+    return textResult;
 }
 
 void Converter::convertGrayScale(){
@@ -134,7 +138,7 @@ void Converter::resize(cv::Mat img, int x, int y){
     cv::resize(img, img, cv::Size(x, y));
 }
 
-void Converter::convertSlice(cv::Mat img, std::string grayScaleType, int from_x,  int to_x, int threadNumber){
+void Converter::convertSlice(cv::Mat img, char *textResult, int grayScaleType, int from_x,  int to_x){
     const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
     const std::string shorterGrayScaleASCII =  " .:-=+*#%@";
 
@@ -143,42 +147,62 @@ void Converter::convertSlice(cv::Mat img, std::string grayScaleType, int from_x,
     cv::minMaxLoc(img, &minValue, &maxValue);
 
     //converting each pixel of the image to a ASCII character based on its brightness
-    std::string text = "";
     for(int i = from_x ; i < to_x; i++){
         for(int j = 0 ; j < img.cols; j++){
-            if(grayScaleType == "shorter"){
-                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
-                text.push_back(shorterGrayScaleASCII[index]);
+            if(j == img.cols - 1){
+                textResult[(img.cols*i) + j] = '\n';
             }
             else{
-                int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
-                text.push_back(standardGrayScaleASCII[index]);
+                if(grayScaleType){
+                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                textResult[(img.cols*i) + j] = shorterGrayScaleASCII[index];
+                }
+                else{
+                    int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                    textResult[(img.cols*i) + j] = standardGrayScaleASCII[index];
+                }
             }
-            if(j == img.cols - 1)
-                text.push_back('\n');
         }
     }
-    imageFormation[threadNumber] = text;
+    
 }
 
-std::string Converter::parallelConvert(cv::Mat img, std::string grayScaleType = "shorter", int numThreads = 1){
+std::unique_ptr<char[]> Converter::parallelConvert(const cv::Mat& img, int grayScaleType, int numThreads = 1){
     
-    for (int i = 0; i < numThreads; i++)
-        imageFormation.push_back("");
-    
+    auto textResult = std::make_unique<char[]>(img.rows * img.cols);
+
     std::vector<std::thread> workers;
 
     for (int i = 0; i < numThreads; i++)
     {
-        workers.push_back(std::thread(convertSlice, img, grayScaleType, i*(img.rows/numThreads), (i+1)*(img.rows /numThreads), i));    
+        workers.push_back(std::thread(convertSlice, img, textResult.get(), grayScaleType, i*(img.rows/numThreads), (i+1)*(img.rows/numThreads)));    
     }
 
     for (int i = 0; i < numThreads; i++)
     {
         workers[i].join();
-        textResult.append(imageFormation[i]);
     }
     
-    return this-> textResult;
-    
+    return textResult;
+}
+
+void Converter:: print_ASCII(std::unique_ptr<char[]> textResult){
+    for (int i = 0; i < img.rows; i++)
+    {
+        for (int j = 0; j < img.cols; j++)
+        {
+            std::cout << textResult[(img.cols*i) + j];
+        }
+    }
+}
+
+void Converter:: print_ASCII(){
+    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 2);
+    for (int i = 0; i < img.rows; i++)
+    {
+        for (int j = 0; j < img.cols; j++)
+        {
+            std::cout << textResult[(img.cols*i) + j];
+        }
+    }
 }

@@ -20,7 +20,7 @@ ImageConverter::ImageConverter(std::string filenameGiven){
 
         try{
             if(extention == "jpeg" || extention == "png" || extention == "jpg"){
-                setImage(cv::imread(getFilename()));
+                setImage(cv::imread(getFilename()));       
             }
             else if (extention == "mp4" || extention == "mov")   
                 throw (1);
