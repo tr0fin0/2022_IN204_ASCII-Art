@@ -1,15 +1,19 @@
-#include "VideoConverter.h"
+#include <gtkmm/application.h>
+#include "screen.h"
 
 int main(){
     
+    auto app = Gtk::Application::create("org.gtkmm.example");
+
+    HelloWorld helloworld;
+
+    //Shows the window and returns when it is closed.
+    return app->run(helloworld);
+
+    //TESTS TO SEE PERFORMANCE OF PARALLEL AND NAIVE
+    /*
     ImageConverter c("../images/flower.jpeg");
-
     c.convertGrayScale();
-
-    std::cout << c.getImage().size() << std::endl;
-
-    //c.resize(100, 50);
-
     std::cout << c.getImage().size() << std::endl;
 
     int tests = 1000;
@@ -25,7 +29,6 @@ int main(){
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);    
     meanN = meanN + duration.count();
     std::cout << "Naive approach ( no threads ) - [converting " << tests <<" images]: " << meanN/1000000 << "s" << std::endl;
-
     
     //testing time for converting 1000 images with the parallel approach
     //testing from 1 -> 14 threads
@@ -45,7 +48,8 @@ int main(){
         
         std::cout<< "Parallel approach " << t <<" thread(s) - [converting " << tests <<" images]: " <<meanN/1000000 << std::endl;
     }
-    
+
+    */    
     //camera capture
     /*
     cv::VideoCapture cap(0);

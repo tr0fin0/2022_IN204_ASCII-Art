@@ -1,6 +1,19 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1.0)
 project( DisplayImage )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
 find_package( OpenCV REQUIRED )
+find_package(PkgConfig)
+pkg_check_modules(GTKMM gtkmm-3.0)
+
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-add_executable( main.exe main.cpp )
-target_link_libraries( main.exe ${OpenCV_LIBS} )
+
+find_package(PkgConfig)
+include_directories(${GTKMM_INCLUDE_DIRS})
+link_directories(${GTKMM_LIBRARY_DIRS})
+
+
+add_executable(main.exe main.cpp )
+target_link_libraries(main.exe ${OpenCV_LIBS} ${GTKMM_LIBRARIES})
+
