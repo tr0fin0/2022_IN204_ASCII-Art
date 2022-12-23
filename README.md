@@ -14,7 +14,43 @@ Accepted input:
 
 
 ## Installation
-Follow the [install OpenCV](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html) documentation.
+### OpenCV
+The project was developed in Ubuntu. Following the [install OpenCV](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html) documentation, open a terminal (`shift + alt + t`) and type the following:
+```bash
+sudo apt update
+```
+
+#### Dependence's
+```bash
+sudo apt install git
+sudo apt install -y g++
+
+sudo apt install -y cmake
+sudo apt install -y make
+```
+
+#### Download Sources
+Navegate to the `home/` folder and type:
+```bash
+git clone https://github.com/opencv/opencv.git
+git -C opencv checkout 4.x
+```
+#### Configure and Build
+In the `home/` folder type:
+```bash
+mkdir -p build && cd build
+cmake ../opencv
+
+make -j4
+```
+`-j4` means that the OpenCV library will be compile using 4 cores. During installation `-j8`, using 8 cores, was tried and it took longer to compile, therefore we recommend to stay with the 4 cores option.
+
+#### Install
+Finally type the following command to install the OpenCV library:
+```bash
+sudo make install
+```
+
 
 ## Usage
 Lorem Ipsum
