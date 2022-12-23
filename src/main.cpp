@@ -1,8 +1,10 @@
+#include "~Util/~util.h"
 #include <gtkmm/application.h>
-#include "screen.h"
+#include "GUI/screen.h"
 
 int main(){
-    
+    run();
+
     auto app = Gtk::Application::create("org.gtkmm.example");
 
     HelloWorld helloworld;

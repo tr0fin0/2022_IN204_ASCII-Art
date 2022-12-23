@@ -4,7 +4,7 @@
 #include <iostream>
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
-#include "VideoConverter.h"
+#include "../converters/VideoConverter.h"
 
 
 class HelloWorld : public Gtk::Window
