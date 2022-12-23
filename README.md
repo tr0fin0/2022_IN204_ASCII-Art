@@ -51,6 +51,16 @@ Finally type the following command to install the OpenCV library:
 sudo make install
 ```
 
+### GTK
+`GTK 4.0` and `GTKmm 3.0` were used for the project's GUI. Open a terminal and type:
+```bash
+sudo apt update
+```
+```bash
+sudo apt install libgtk-4-dev
+sudo apt install libgtkmm-3.0-dev
+```
+
 
 ## Usage
 Lorem Ipsum
