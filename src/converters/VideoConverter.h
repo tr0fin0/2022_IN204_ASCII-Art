@@ -6,39 +6,53 @@ private:
     /* data */
 public:
     VideoConverter(std::string filename);
-    ~VideoConverter();
+    ~VideoConverter(){};
+    void CaptureWebcam();
+
 };
 
-VideoConverter::~VideoConverter()
-{
-}
+VideoConverter::VideoConverter(std::string filenameGiven){
+        setFilename(filenameGiven);
 
-/*
-    
-    VideoCapture cap(0);
-    Mat img, aux, img_gray;
+        std::string extention = getExtention(getFilename());
 
+        try{
+            if(extention == "mp4" || extention == "mov"){
+                setImage(cv::imread(getFilename()));       
+            }
+            else if (extention == "jpeg" || extention == "png" || extention == "jpg" )
+                throw (1);
+            
+            else
+                throw (2);    
+            
+        }catch(int e){
+            if(e == 1){
+                std::cout << "Not the correct object type, try use ImageConverter" << std::endl;
+            }
+            if(e == 2){
+                std::cout << "Wrong extention try to use = mov, mp4" << std::endl;
+            }
+            std::exit(1);
+        }
+
+    };
+
+//camera capture
+void VideoConverter::CaptureWebcam(){
+
+    cv::VideoCapture cap(0);
+    cv::Mat img;
     while(true){
+        Converter c;
         cap.read(img);
-
         system("cls || clear");
 
-        cvtColor(img, aux, COLOR_BGR2GRAY);
-        resize(aux, img_gray, Size(140, 75));
-        string ASCII_gray_scale = "   ..:-=+*#%@";
+        c.setImage(img);
+        c.convertGrayScale();
+        
+        c.resize(170, 50);
 
-        //creating the string
-        string text = "";
-        for(int i = 0 ; i < img_gray.rows; i++){
-            for(int j = 0 ; j < img_gray.cols; j++){
-                //for the future -> 0 -> min(pixel_image) and 256 -> max(pixel_image)
-                int index  = ASCII_gray_scale.size()*((int)img_gray.at<uchar>(i,j) - 0)/256;
-                text.push_back(ASCII_gray_scale[index]);
-            }
-            text.push_back('\n');
-        }
-        cout << text;
-    
+        c.print_ASCII(c.parallelConvert(c.getImage(), 1, 3));
     }
-    
-    */
+}

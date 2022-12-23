@@ -47,7 +47,7 @@ void HelloWorld::on_button_clicked()
 {
   ImageConverter c("../images/flower.jpeg");
   c.convertGrayScale();
-  c.resize(50,50);
+  c.resize(50,25);
   c.print_ASCII();
 }
 
