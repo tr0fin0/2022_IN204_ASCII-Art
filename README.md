@@ -61,6 +61,10 @@ sudo apt install libgtk-4-dev
 sudo apt install libgtkmm-3.0-dev
 ```
 
+## Running code
+In ASCII-ART directory
+$ make 
+
 
 ## Usage
 Lorem Ipsum
