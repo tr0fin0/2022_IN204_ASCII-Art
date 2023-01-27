@@ -18,7 +18,6 @@ void sendToClient(){
     sf::IpAddress recipient = client_sender;
     unsigned short client_receive_port = 54001;
     
-    char buffer[2500];
     //camera capture
     cv::VideoCapture cap(0);
     cv::Mat img;
@@ -32,9 +31,8 @@ void sendToClient(){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send(buffer, 2500, recipient, client_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
         {
-            std::cout << buffer;
         }        
     }
 
@@ -46,6 +44,7 @@ void receiveFromClient(){
     unsigned short client_sender_port;
 
     sf::UdpSocket socket;
+    
     if (socket.bind(54000) != sf::Socket::Done)
     {
         // error...
@@ -72,7 +71,6 @@ void be_server(){
     std::thread t2 = std::thread(receiveFromClient);
 
     std::thread t1 = std::thread(sendToClient);
-
 
     t1.join();
     t2.join();

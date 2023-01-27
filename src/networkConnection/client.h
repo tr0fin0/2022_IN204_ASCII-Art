@@ -20,7 +20,6 @@ void sendToServer(const char *server_IP_address){
     sf::IpAddress recipient = server_IP_address;
     unsigned short server_receive_port = 54000;
     
-    char buffer[2500];
     //camera capture
     cv::VideoCapture cap(0);
     cv::Mat img;
@@ -34,9 +33,8 @@ void sendToServer(const char *server_IP_address){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send(buffer, 2500, recipient, server_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
         {
-            std::cout << buffer;
         }        
     }
 
@@ -74,4 +72,3 @@ void be_client(const char* server_IP_address){
     t1.join();
     t2.join();
 }
-
