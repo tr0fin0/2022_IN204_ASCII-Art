@@ -56,8 +56,11 @@ void receiveFromServer(const char* server_IP_address){
         // UDP socket:
         if (socket.receive(buffer, 2500, received, server_sender, server_sender_port) != sf::Socket::Done)
         {
-            std::cout << buffer;
+            std::cout<<"Error in rcv" << std::endl;
+     
         }
+        std::cout << buffer;
+
     
     }
 }

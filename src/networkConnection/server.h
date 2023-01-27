@@ -33,6 +33,7 @@ void sendToClient(){
         //enviando para server
         if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
         {
+            std::cout << "Error in sending to client" << std::endl;
         }        
     }
 
@@ -40,7 +41,7 @@ void sendToClient(){
 
 void receiveFromClient(){
     char buffer[2500];
-    std::size_t received;
+    std::size_t received = 0;
     unsigned short client_sender_port;
 
     sf::UdpSocket socket;
@@ -51,14 +52,14 @@ void receiveFromClient(){
         printf("Error bro\n");
         return;
     }
-
+    std::cout << "Bind sucessfull!" << std::endl;
     while(1){
         // UDP socket:
         if (socket.receive(buffer, 2500, received, client_sender, client_sender_port) != sf::Socket::Done)
         {
-            std::cout << buffer;
+            std::cout<<"Error in rcv" << std::endl;
         }
-    
+        std::cout << buffer;
     }
     
 
