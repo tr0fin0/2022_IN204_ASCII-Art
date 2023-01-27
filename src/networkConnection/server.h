@@ -13,7 +13,7 @@
 
 using namespace std;
 
-//função para esperar tantos milisegundos
+/*função para esperar tantos milisegundos
 void sleep_ms(size_t ms){
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
@@ -70,10 +70,10 @@ void be_server(){
     }
 
 }
-
+*/
 
 //tentando com threads
-/*
+
 void sendToClient(){
     cout << "Send To Client\n";
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -97,23 +97,22 @@ void sendToClient(){
     struct sockaddr_in cliaddr;
     socklen_t cliaddr_len = sizeof(cliaddr);
 
-    char buffer[8600];
+    char buffer[2500];
     //camera capture
     cv::VideoCapture cap(0);
     cv::Mat img;
 
+    recvfrom(fd, buffer, 2500, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
+    Converter c;
     while(1){
-
         //captando a imagem
-        Converter c;
         cap.read(img);
-
         c.setImage(img);
         c.convertGrayScale();
-        c.resize(170, 50);
+        c.resize(50, 50);
 
         //enviando para server
-        sendto(fd, (char*)c.parallelConvert(c.getImage(), 1, 3).get(), strlen(buffer), 0, (const struct sockaddr *) &cliaddr, cliaddr_len);
+        sendto(fd, (char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2400, 0, (const struct sockaddr *) &cliaddr, cliaddr_len);
     }
 
 }
@@ -141,12 +140,13 @@ void receiveFromClient(){
     struct sockaddr_in cliaddr;
     socklen_t cliaddr_len = sizeof(cliaddr);
 
-    char buffer[8600];
+    char buffer[2500];
     while(1){
-        system("cls || clear");
-
-        recvfrom(fd, buffer, 8600, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
-        cout << buffer << endl;    
+        recvfrom(fd, buffer, 2500, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
+        if(strlen(buffer) == 2400){
+            system("clear");
+            cout << buffer << endl;    
+        }
     }
 }
 
@@ -155,11 +155,10 @@ void be_server(){
     
     std::thread t1 = std::thread(sendToClient);
 
-    std::thread t2 = std::thread(receiveFromClient);
+    //std::thread t2 = std::thread(receiveFromClient);
 
     t1.join();
-    t2.join();
+    //t2.join();
 
 }
 
-*/
