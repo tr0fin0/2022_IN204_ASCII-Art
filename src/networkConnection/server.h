@@ -59,7 +59,10 @@ void receiveFromClient(){
         {
             std::cout<<"Error in rcv" << std::endl;
         }
-        std::cout << buffer;
+        if(received == 2500){
+            system("clear");
+            std::cout<<buffer;
+        }
     }
     
 
