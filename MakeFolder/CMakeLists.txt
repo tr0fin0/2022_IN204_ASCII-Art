@@ -14,6 +14,6 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 
-add_executable(main.exe ../src/main.cpp )
-target_link_libraries(main.exe ${OpenCV_LIBS} ${GTKMM_LIBRARIES})
+add_executable(main.exe ../src/main.cpp)
+target_link_libraries(main.exe ${OpenCV_LIBS} ${GTKMM_LIBRARIES} sfml-network sfml-system)
 

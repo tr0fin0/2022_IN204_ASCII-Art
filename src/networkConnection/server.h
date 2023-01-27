@@ -1,164 +1,81 @@
 #include <iostream>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <errno.h>
 #include <stdio.h>
-#include <signal.h>
 #include <string.h>
-#include <unistd.h>
-#include <random>
 #include "client.h"
-
 using namespace std;
 
-/*função para esperar tantos milisegundos
-void sleep_ms(size_t ms){
-    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-}
 
-
-void be_server(){
+sf::IpAddress client_sender;
     
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-    if(fd == -1){
-        perror("Socket creation failed :");
-        exit(-1);
-    }
-
-    struct sockaddr_in addr;
-    
-    addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(80);
-
-    if(bind(fd, (const struct sockaddr *)&addr, sizeof(addr)) == -1){
-        perror("Listening failed on the socket: ");
-        exit(-1);
-    }
-    
-    struct sockaddr_in cliaddr;
-    socklen_t cliaddr_len = sizeof(cliaddr);
-
-    char buffer[2500];
-    //camera capture
-    //cv::VideoCapture cap(0);
-    //cv::Mat img;
-
-    while(1){
-
-        //captando a imagem
-        //Converter c;
-        //cap.read(img);
-
-
-        //c.setImage(img);
-        //c.convertGrayScale();
-        //c.resize(170, 50);
-
-        recvfrom(fd, buffer, 2500, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
-        if(strlen(buffer) == 2400){
-            system("clear");
-            cout << strlen(buffer) << endl;
-            cout << buffer << endl;    
-        }
-            
-        //enviando para server
-        //sendto(fd, (char*)c.parallelConvert(c.getImage(), 1, 3).get(), strlen(buffer), 0, (const struct sockaddr *) &cliaddr, cliaddr_len);
-    }
-
-}
-*/
-
-//tentando com threads
 
 void sendToClient(){
-    cout << "Send To Client\n";
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    sf::UdpSocket socket;
 
-    if(fd == -1){
-        perror("Socket creation failed :");
-        exit(-1);
-    }
-
-    struct sockaddr_in addr;
+    // UDP socket:
+    sf::IpAddress recipient = client_sender;
+    unsigned short client_receive_port = 54001;
     
-    addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(80);
-
-    if(bind(fd, (const struct sockaddr *)&addr, sizeof(addr)) == -1){
-        perror("Listening failed on the socket: ");
-        exit(-1);
-    }
-    
-    struct sockaddr_in cliaddr;
-    socklen_t cliaddr_len = sizeof(cliaddr);
-
     char buffer[2500];
     //camera capture
     cv::VideoCapture cap(0);
     cv::Mat img;
 
-    recvfrom(fd, buffer, 2500, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
-    Converter c;
-    while(1){
+     while(1){
         //captando a imagem
+        Converter c;
         cap.read(img);
         c.setImage(img);
         c.convertGrayScale();
         c.resize(50, 50);
 
         //enviando para server
-        sendto(fd, (char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2400, 0, (const struct sockaddr *) &cliaddr, cliaddr_len);
+        if (socket.send(buffer, 2500, recipient, client_receive_port) != sf::Socket::Done)
+        {
+            std::cout << buffer;
+        }        
     }
 
 }
 
 void receiveFromClient(){
-    cout << "Receive from client\n";
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-    if(fd == -1){
-        perror("Socket creation failed :");
-        exit(-1);
-    }
-
-    struct sockaddr_in addr;
-    
-    addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(80);
-
-    if(bind(fd, (const struct sockaddr *)&addr, sizeof(addr)) == -1){
-        perror("Listening failed on the socket: ");
-        exit(-1);
-    }
-    
-    struct sockaddr_in cliaddr;
-    socklen_t cliaddr_len = sizeof(cliaddr);
-
     char buffer[2500];
-    while(1){
-        recvfrom(fd, buffer, 2500, 0, (struct sockaddr *) &cliaddr, &cliaddr_len);
-        if(strlen(buffer) == 2400){
-            system("clear");
-            cout << buffer << endl;    
-        }
+    std::size_t received;
+    unsigned short client_sender_port;
+
+    sf::UdpSocket socket;
+    if (socket.bind(54000) != sf::Socket::Done)
+    {
+        // error...
+        printf("Error bro\n");
+        return;
     }
+
+    while(1){
+        // UDP socket:
+        if (socket.receive(buffer, 2500, received, client_sender, client_sender_port) != sf::Socket::Done)
+        {
+            std::cout << buffer;
+        }
+    
+    }
+    
+
+
 }
 
 
 void be_server(){
     
+    std::thread t2 = std::thread(receiveFromClient);
+
     std::thread t1 = std::thread(sendToClient);
 
-    //std::thread t2 = std::thread(receiveFromClient);
 
     t1.join();
-    //t2.join();
+    t2.join();
 
 }
 
