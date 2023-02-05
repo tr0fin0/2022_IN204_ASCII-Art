@@ -14,6 +14,13 @@ Accepted input:
 
 
 ## Installation
+### SFML
+[SFML](https://www.sfml-dev.org/) provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. It is composed of five modules: system, window, graphics, audio and network.
+```bash
+sudo apt-get install libsfml-dev
+```
+
+
 ### OpenCV
 The project was developed in Ubuntu. Following the [install OpenCV](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html) documentation, open a terminal (`shift + alt + t`) and type the following:
 ```bash
@@ -83,6 +90,9 @@ Code structure:
     │   ├── ...
     │   └── readme.png          # README.md main image
     └── ...
+
+GTK Fram structure
+![alt text](images/introduction.png)
 
 ## Support
 Lorem Ipsum

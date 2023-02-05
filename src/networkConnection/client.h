@@ -15,9 +15,9 @@ sf::IpAddress server_sender;
 
 void sendToServer(const char *server_IP_address){
     sf::UdpSocket socket;
-
     // UDP socket:
-    sf::IpAddress recipient = server_IP_address;
+    sf::IpAddress recipient("147.250.226.201");
+    std::cout<<"Trying to connect to " << recipient.toString()<<"\n";;
     unsigned short server_receive_port = 54000;
     
     //camera capture
@@ -35,6 +35,7 @@ void sendToServer(const char *server_IP_address){
         //enviando para server
         if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
         {
+        std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
         }        
     }
 
@@ -46,20 +47,21 @@ void receiveFromServer(const char* server_IP_address){
     unsigned short server_sender_port;
 
     sf::UdpSocket socket;
-    if (socket.bind(54000) != sf::Socket::Done)
+    if (socket.bind(54001) != sf::Socket::Done)
     {
         printf("Error bro\n");
         return;
     }
-
+    std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
     while(1){
         // UDP socket:
-        if (socket.receive(buffer, 2500, received, server_sender, server_sender_port) != sf::Socket::Done)
+        if (socket.receive(buffer, sizeof(buffer), received, server_sender, server_sender_port) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
      
         }
-        if(received == 2500){
+        std::cout<<received;
+        if(received == sizeof(buffer)){
             system("clear");
             std::cout<<buffer;
         }
@@ -69,7 +71,7 @@ void receiveFromServer(const char* server_IP_address){
 
 
 void be_client(const char* server_IP_address){
-    
+
     std::thread t1 = std::thread(sendToServer, server_IP_address);
 
     std::thread t2 = std::thread(receiveFromServer, server_IP_address);
