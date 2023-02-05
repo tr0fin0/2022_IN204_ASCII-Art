@@ -9,14 +9,19 @@ using namespace std;
 
 
 sf::IpAddress client_sender;
-    
 
 void sendToClient(){
     sf::UdpSocket socket;
 
-    // UDP socket:
-    sf::IpAddress recipient = client_sender;
+    while (client_sender.toString() == "0.0.0.0")
+    {
+        std::cout<<client_sender.toString()<<"\n";
+    }
+    // UDP socket:    
+    sf::IpAddress recipient(client_sender.toString());
     unsigned short client_receive_port = 54001;
+    
+    std::cout<<"Connectiong to " << recipient.toString();
     
     //camera capture
     cv::VideoCapture cap(0);
@@ -52,17 +57,19 @@ void receiveFromClient(){
         printf("Error bro\n");
         return;
     }
-    std::cout << "Bind sucessfull!" << std::endl;
+    std::cout << "Bind sucessfull in " << socket.getLocalPort() << " "<< std::endl;
+
     while(1){
         // UDP socket:
-        if (socket.receive(buffer, 2500, received, client_sender, client_sender_port) != sf::Socket::Done)
+        if (socket.receive(buffer, sizeof(buffer), received, client_sender, client_sender_port) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
         }
-        if(received == 2500){
+        if(received == sizeof(buffer)){
             system("clear");
-            std::cout<<buffer;
+            std::cout<<buffer<<std::endl;
         }
+        
     }
     
 
