@@ -16,7 +16,7 @@ sf::IpAddress server_sender;
 void sendToServer(const char *server_IP_address){
     sf::UdpSocket socket;
     // UDP socket:
-    sf::IpAddress recipient("147.250.226.201");
+    sf::IpAddress recipient(server_IP_address);
     std::cout<<"Trying to connect to " << recipient.toString()<<"\n";;
     unsigned short server_receive_port = 54000;
     
@@ -53,14 +53,14 @@ void receiveFromServer(const char* server_IP_address){
         return;
     }
     std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
+    int i = 1;
     while(1){
+        i = i * -1;
         // UDP socket:
         if (socket.receive(buffer, sizeof(buffer), received, server_sender, server_sender_port) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
-     
         }
-        std::cout<<received;
         if(received == sizeof(buffer)){
             system("clear");
             std::cout<<buffer;

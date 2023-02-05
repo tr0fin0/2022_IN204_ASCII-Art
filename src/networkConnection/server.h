@@ -15,7 +15,6 @@ void sendToClient(){
 
     while (client_sender.toString() == "0.0.0.0")
     {
-        std::cout<<client_sender.toString()<<"\n";
     }
     // UDP socket:    
     sf::IpAddress recipient(client_sender.toString());

@@ -20,7 +20,7 @@ int main(){
         std::cin >> choice;
     }
     if(choice == 2){
-        be_client("147.250.84.54");
+        be_client("147.250.224.183");
     }
     else{
         system("hostname -I");
