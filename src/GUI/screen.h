@@ -2,54 +2,73 @@
 #define GTKMM_EXAMPLE_HELLOWORLD_H
 
 #include <iostream>
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
-#include "../converters/VideoConverter.h"
+#include <gtkmm.h>
+#include "../networkConnection/server.h"
 
-
-class HelloWorld : public Gtk::Window
+class ExampleWindow : public Gtk::Window
 {
-
 public:
-  HelloWorld();
-  virtual ~HelloWorld();
+  ExampleWindow();
+  virtual ~ExampleWindow();
 
-protected:
-  //Signal handlers:
-  void on_button_clicked();
+private:
+  // Signal handlers:
+  void on_button_quit();
+  void on_button_numbered(const Glib::ustring& data);
 
-  //Member widgets:
-  Gtk::Button m_button;
+  // Child widgets:
+  Gtk::Style *style;
+  Gtk::Widget *image;
+  Gtk::Grid m_grid;
+  Gtk::Button m_button_1, m_button_2, m_button_quit;
 };
 
-HelloWorld::HelloWorld(): m_button("Make a flower!")   // creates a new button with label "Hello World".
+
+ExampleWindow::ExampleWindow()
+: m_button_1("Image Convertion"),
+  m_button_2("Video Convertion"),
+  m_button_quit("Quit")
 {
-  // Sets the border width of the window.
-  set_border_width(20);
 
-  // When the button receives the "clicked" signal, it will call the
-  // on_button_clicked() method defined below.
-  m_button.signal_clicked().connect(sigc::mem_fun(*this,
-              &HelloWorld::on_button_clicked));
-              
-  // This packs the button into the Window (a container).
-  add(m_button);
 
-  // The final step is to display this newly created widget...
-  m_button.show();
+  set_title("Gtk::Grid");
+  set_border_width(12);
+  set_default_size(500, 400);
+
+  image  = Glib::wrap(gtk_image_new_from_file("/home/gustavo/Documentos/facul/ENSTA/GLObjOri/ASCII-Art/images/waves.png"), false);
+  
+  add(m_grid);
+  m_grid.add(m_button_1);
+  m_grid.add(m_button_2);
+  m_grid.attach_next_to(*image, m_button_1, Gtk::POS_TOP, 2, 1);
+  m_grid.attach_next_to(m_button_quit, m_button_1, Gtk::POS_BOTTOM, 2, 1);
+
+  m_button_1.signal_clicked().connect(
+    sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
+      &ExampleWindow::on_button_numbered), "button 1") );
+  m_button_2.signal_clicked().connect(
+    sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
+      &ExampleWindow::on_button_numbered), "button 2") );
+
+  m_button_quit.signal_clicked().connect(sigc::mem_fun(*this,
+    &ExampleWindow::on_button_quit) );
+
+  show_all_children();
 }
 
-HelloWorld::~HelloWorld()
+ExampleWindow::~ExampleWindow()
 {
 }
 
-void HelloWorld::on_button_clicked()
+void ExampleWindow::on_button_quit()
 {
-  ImageConverter c("../images/flower.jpeg");
-  c.convertGrayScale();
-  c.resize(50,25);
-  c.print_ASCII();
+  hide();
 }
 
+void
+ExampleWindow::on_button_numbered(const Glib::ustring& data)
+{
+  std::cout << data << " was pressed" << std::endl;
+}
 
 #endif
