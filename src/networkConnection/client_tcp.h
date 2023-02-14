@@ -10,7 +10,9 @@
 
 using namespace std;
 
-void sendToServer(sf::TcpSocket socket){
+sf::TcpSocket socket;
+
+void sendToServer(){
     
     //camera capture
     cv::VideoCapture cap(0);
@@ -33,7 +35,7 @@ void sendToServer(sf::TcpSocket socket){
 
 }
 
-void receiveFromServer(sf::TcpSocket socket){
+void receiveFromServer(){
     char buffer[2500];
     std::size_t received = 0;
 
@@ -53,8 +55,6 @@ void receiveFromServer(sf::TcpSocket socket){
 
 
 void be_client(const char* server_IP_address){
-
-    sf::TcpSocket socket;
     
     sf::Socket::Status status = socket.connect(server_IP_address, 54000);
     if (status != sf::Socket::Done)
@@ -62,9 +62,9 @@ void be_client(const char* server_IP_address){
         cout << "Error trying to connect" << endl;
     }
 
-    std::thread t1 = std::thread(sendToServer, socket);
+    std::thread t1 = std::thread(sendToServer);
 
-    std::thread t2 = std::thread(receiveFromServer, socket);
+    std::thread t2 = std::thread(receiveFromServer);
 
     t1.join();
     t2.join();
