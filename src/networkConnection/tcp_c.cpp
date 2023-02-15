@@ -31,19 +31,8 @@ void sendToServer(){
 void receiveFromServer(){
     char buffer[2500];
     std::size_t received;
-    unsigned short server_sender_port;
-
-    sf::UdpSocket socket;
-    if (socket.bind(54001) != sf::Socket::Done)
-    {
-        printf("Error bro\n");
-        return;
-    }
-    std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
-    int i = 1;
+    
     while(1){
-        i = i * -1;
-        // UDP socket:
         if (socket_client.receive(buffer, sizeof(buffer), received) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
