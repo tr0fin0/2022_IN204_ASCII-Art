@@ -1,12 +1,4 @@
-#include <iostream>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include "client_tcp.h"
-using namespace std;
-
+#include "tcp_c.cpp"
 sf::TcpSocket socket_server;
 
 void sendToClient(){
@@ -37,31 +29,33 @@ void receiveFromClient(){
     std::size_t received = 0;
     
     while(1){
-
+        // UDP socket:
         if (socket_server.receive(buffer, sizeof(buffer), received) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
         }
-        system("clear");
-        std::cout<<buffer<<std::endl;
+        if(received == sizeof(buffer)){
+            system("clear");
+            std::cout<<buffer<<std::endl;
+        }
+        
     }
     
-
-
 }
 
 
-void be_server(){
+void be_tcp_server(){
+    
     sf::TcpListener listener;
-
+    
     // bind the listener to a port
-    if (listener.listen(54000) != sf::Socket::Done)
+    if (listener.listen(53000) != sf::Socket::Done)
     {
         // error...
         printf("Error trying to listen\n");
         return;
     }
-
+    
     // accept a new connection
     if (listener.accept(socket_server) != sf::Socket::Done)
     {
@@ -69,12 +63,13 @@ void be_server(){
         cout << "Error trying to bind the connection" << endl;
     }
 
+    
     std::thread t2 = std::thread(receiveFromClient);
 
     std::thread t1 = std::thread(sendToClient);
 
     t1.join();
     t2.join();
-
+ 
 }
 

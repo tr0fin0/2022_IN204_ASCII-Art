@@ -56,7 +56,7 @@ void VideoConverter::CaptureWebcam(){
         c.setImage(img);
         c.convertGrayScale();
         
-        c.resize(170, 50);
+        c.resize(65, 50);
         
 
         c.print_ASCII(c.parallelConvert(c.getImage(), 1, 3));

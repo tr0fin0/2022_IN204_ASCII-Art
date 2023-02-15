@@ -124,6 +124,7 @@ std::unique_ptr<char[]> Converter::naiveConvert(cv::Mat img, int grayscaleType =
 
 void Converter::convertGrayScale(){
     cv::cvtColor(this->img, this->img, cv::COLOR_BGR2GRAY);
+    //cv::Canny(this->img, this->img, 10, 50);
 }
 
 void Converter::convertGrayScale(cv::Mat image){
@@ -139,8 +140,8 @@ void Converter::resize(cv::Mat img, int x, int y){
 }
 
 void Converter::convertSlice(cv::Mat img, char *textResult, int grayScaleType, int from_x,  int to_x){
-    const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
-    const std::string shorterGrayScaleASCII =  " .:-=+*#%@";
+    const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
+    const std::string shorterGrayScaleASCII =  ".:-=+*#%@";
 
     //getting the max and min pixel values of a image
     double maxValue, minValue;

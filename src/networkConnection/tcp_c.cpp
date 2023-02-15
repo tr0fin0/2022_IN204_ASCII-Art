@@ -1,16 +1,9 @@
-#include <iostream>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
 #include <SFML/Network.hpp>
-
 #include "../converters/VideoConverter.h"
 
 using namespace std;
 
-sf::TcpSocket socket;
+sf::TcpSocket socket_client;
 
 void sendToServer(){
     
@@ -27,9 +20,9 @@ void sendToServer(){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500) != sf::Socket::Done)
+        if (socket_client.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500) != sf::Socket::Done)
         {
-        std::cout<<"Error in sending to " << socket.getRemoteAddress() <<"\n";;        
+            std::cout<<"Error in sending"<<"\n";        
         }        
     }
 
@@ -37,11 +30,21 @@ void sendToServer(){
 
 void receiveFromServer(){
     char buffer[2500];
-    std::size_t received = 0;
+    std::size_t received;
+    unsigned short server_sender_port;
 
+    sf::UdpSocket socket;
+    if (socket.bind(54001) != sf::Socket::Done)
+    {
+        printf("Error bro\n");
+        return;
+    }
+    std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
+    int i = 1;
     while(1){
+        i = i * -1;
         // UDP socket:
-        if (socket.receive(buffer, sizeof(buffer), received) != sf::Socket::Done)
+        if (socket_client.receive(buffer, sizeof(buffer), received) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
         }
@@ -55,8 +58,8 @@ void receiveFromServer(){
 
 
 void be_client(const char* server_IP_address){
-    
-    sf::Socket::Status status = socket.connect(server_IP_address, 54000);
+
+    sf::Socket::Status status = socket_client.connect(server_IP_address, 53000);
     if (status != sf::Socket::Done)
     {
         cout << "Error trying to connect" << endl;
