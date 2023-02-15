@@ -1,6 +1,7 @@
 #include <iostream>
 #include <gtkmm.h>
 #include "../utils/utils.h"
+#include "../utils/utils.h"
 #include "../networkConnection/server.h"
 
 class mainWindow : public Gtk::Window 
