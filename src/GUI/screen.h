@@ -1,74 +1,128 @@
-#ifndef GTKMM_EXAMPLE_HELLOWORLD_H
-#define GTKMM_EXAMPLE_HELLOWORLD_H
-
 #include <iostream>
 #include <gtkmm.h>
+#include "../utils/utils.h"
 #include "../networkConnection/server.h"
 
-class ExampleWindow : public Gtk::Window
+class mainWindow : public Gtk::Window 
 {
 public:
-  ExampleWindow();
-  virtual ~ExampleWindow();
+  // declarations with come after
+  mainWindow();           // class constructor
+
+  void setHierarchy();    // class widgets hierarchy
+  void setWidgets();      // class widgets setup
+
+  virtual ~mainWindow();  // class destructor
+
 
 private:
-  // Signal handlers:
+  // action handlers
   void on_button_quit();
   void on_button_numbered(const Glib::ustring& data);
 
-  // Child widgets:
-  Gtk::Style *style;
+  // widgets declaration
+  // Gtk::Grid m_grid;
+  Gtk::Fixed fixedWindow;                   // window main fixed
+  Gtk::Box boxImg, boxReturn, boxButtons;
+  Gtk::Alignment alignReturn, alignButtons;
+  Gtk::Entry entryIP;                       // input from user
+  Gtk::Label labelIP, labelLinks;
+  Gtk::Style  *style;                       // images
   Gtk::Widget *image;
-  Gtk::Grid m_grid;
-  Gtk::Button m_button_1, m_button_2, m_button_quit;
+  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonQuit;
 };
 
 
-ExampleWindow::ExampleWindow()
-: m_button_1("Image Convertion"),
-  m_button_2("Video Convertion"),
-  m_button_quit("Quit")
+
+mainWindow::mainWindow():
+  boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
+  boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
+  boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL} 
+  // buttonConvert("Convert from File"),
+  // buttonWebcam("Webcam"),
+  // buttonWebconference("Webconference"),
+  // buttonQuit("Quit")
 {
+  set_title("ASCII Art");
+  set_default_size(1080, 720);
+  set_border_width(15);
+  set_visible(true);
 
-
-  set_title("Gtk::Grid");
-  set_border_width(12);
-  set_default_size(500, 400);
-
-  image  = Glib::wrap(gtk_image_new_from_file("/home/gustavo/Documentos/facul/ENSTA/GLObjOri/ASCII-Art/images/waves.png"), false);
-  
-  add(m_grid);
-  m_grid.add(m_button_1);
-  m_grid.add(m_button_2);
-  m_grid.attach_next_to(*image, m_button_1, Gtk::POS_TOP, 2, 1);
-  m_grid.attach_next_to(m_button_quit, m_button_1, Gtk::POS_BOTTOM, 2, 1);
-
-  m_button_1.signal_clicked().connect(
-    sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
-      &ExampleWindow::on_button_numbered), "button 1") );
-  m_button_2.signal_clicked().connect(
-    sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
-      &ExampleWindow::on_button_numbered), "button 2") );
-
-  m_button_quit.signal_clicked().connect(sigc::mem_fun(*this,
-    &ExampleWindow::on_button_quit) );
-
+  setHierarchy();
+  setWidgets();
   show_all_children();
 }
 
-ExampleWindow::~ExampleWindow()
+
+
+void mainWindow::setHierarchy()
+{
+
+  std::string mainImagePath = pathRel2Abs("images/waves.png");
+  const char * mainImagePathConst = mainImagePath.c_str();
+
+  image  = Glib::wrap(gtk_image_new_from_file(mainImagePathConst), false);
+  // image  = Glib::wrap(gtk_image_new_from_file("/home/gustavo/Documentos/facul/ENSTA/GLObjOri/ASCII-Art/images/waves.png"), false);
+  // image  = Glib::wrap(gtk_image_new_from_file("/home/tr0fin0/Documents/git_repositories/ASCII-Art/images/waves.png"), false);
+
+  // Window
+  add(fixedWindow);
+  // add(fixed);
+
+  // Fixed
+  fixedWindow.add(boxImg)
+  fixedWindow.add(boxReturn)
+  fixedWindow.add(boxButtons)
+  fixedWindow.move(boxImg,      10, 10)
+  fixedWindow.move(boxReturn,   10, 10)
+  fixedWindow.move(boxButtons,  200, 200)
+  // m_grid.add(buttonConvert);
+  // m_grid.add(buttonWebcam);
+  // m_grid.add(buttonWebconference);
+  // m_grid.attach(*image, 0, 0, 1, 1);
+  // m_grid.attach(buttonConvert, 1, 0, 1, 1);
+  // m_grid.attach(buttonWebcam, 2, 0, 1, 1);
+  // m_grid.attach(buttonWebconference, 3, 0, 1, 1);
+  // m_grid.attach_next_to(*image, buttonConvert, Gtk::POS_TOP, 2, 1);
+  // m_grid.attach_next_to(buttonQuit, buttonConvert, Gtk::POS_BOTTOM, 2, 1);
+
+
+  // Frame 1
+
+
+
+
+  // buttonConvert.signal_clicked().connect(
+  //   sigc::bind<Glib::ustring>(sigc::mem_fun(*this,
+  //     &mainWindow::on_button_numbered), "button 1") );
+
+
+  // buttonWebcam.signal_clicked().connect(
+  //   sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
+  //     &mainWindow::on_button_numbered), "button 2") );
+
+
+  // buttonQuit.signal_clicked().connect(sigc::mem_fun(*this,
+  //   &mainWindow::on_button_quit) );
+
+  // show_all_children();
+}
+
+
+
+
+mainWindow::~mainWindow()
 {
 }
 
-void ExampleWindow::on_button_quit()
+
+void mainWindow::on_button_quit()
 {
   hide();
 }
 
 void
-ExampleWindow::on_button_numbered(const Glib::ustring& data)
+mainWindow::on_button_numbered(const Glib::ustring& data)
 {
   std::cout << data << " was pressed" << std::endl;
 }
-
-#endif
