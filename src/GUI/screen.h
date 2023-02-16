@@ -92,7 +92,65 @@ void mainWindow::setHierarchy()
 
 
 void mainWindow::setStyle(){
+  set_title("ASCII Art");
+  set_default_size(1080, 720);
+  set_border_width(10);
+  set_visible(true);
+  set_can_focus(false);
 
+  // Fixed
+  fixedWindow.set_size_request(1080, 720);
+  fixedWindow.set_visible(true);
+  fixedWindow.set_can_focus(false);
+
+
+  // Image
+  boxImg.set_visible(true);
+  boxImg.set_can_focus(false);
+
+
+  // Return
+  alignReturn.set_size_request(200, 100);
+  alignReturn.set_visible(true);
+  alignReturn.set_can_focus(false);
+  alignReturn.set_border_width(10);
+
+  boxReturn.set_visible(true);
+  boxReturn.set_can_focus(false);
+
+  buttonReturn.set_label("back");
+  buttonReturn.set_visible(true);
+  buttonReturn.set_can_focus(false);
+  buttonReturn.set_focus_on_click(true);
+  buttonReturn.set_border_width(10);
+
+
+  // Buttons
+  alignButtons.set_size_request(400, 400);
+  alignButtons.set_visible(true);
+  alignButtons.set_can_focus(false);
+  alignButtons.set_border_width(10);
+
+  boxButtons.set_visible(true);
+  boxButtons.set_can_focus(false);
+
+  buttonConvert.set_label("convert");
+  buttonConvert.set_visible(true);
+  buttonConvert.set_can_focus(false);
+  buttonConvert.set_focus_on_click(true);
+  buttonConvert.set_border_width(2);
+
+  buttonWebcam.set_label("webcam");
+  buttonWebcam.set_visible(true);
+  buttonWebcam.set_can_focus(false);
+  buttonWebcam.set_focus_on_click(true);
+  buttonWebcam.set_border_width(2);
+
+  buttonWebconference.set_label("webconference");
+  buttonWebconference.set_visible(true);
+  buttonWebconference.set_can_focus(false);
+  buttonWebconference.set_focus_on_click(true);
+  buttonWebconference.set_border_width(2);
 }
 
 
