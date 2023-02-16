@@ -43,7 +43,7 @@ mainWindow::mainWindow():
   set_visible(true);
 
   setHierarchy();
-  setWidgets();
+  setStyle();
   show_all_children();
 }
 
@@ -85,14 +85,10 @@ void mainWindow::setHierarchy()
 }
 
 
-  // buttonConvert.signal_clicked().connect(
-  //   sigc::bind<Glib::ustring>(sigc::mem_fun(*this,
-  //     &mainWindow::on_button_numbered), "button 1") );
 
+void mainWindow::setStyle(){
 
-  // buttonWebcam.signal_clicked().connect(
-  //   sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
-  //     &mainWindow::on_button_numbered), "button 2") );
+}
 
 
   // buttonQuit.signal_clicked().connect(sigc::mem_fun(*this,
