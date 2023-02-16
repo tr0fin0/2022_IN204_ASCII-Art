@@ -2,6 +2,7 @@
 #include <gtkmm.h>
 #include "../utils/utils.h"
 #include "../networkConnection/server.h"
+// #include "../networkConnection/tcp_s.cpp"
 
 class mainWindow : public Gtk::Window 
 {
@@ -101,7 +102,6 @@ void mainWindow::setBehaviour(){
 
 
 
-
 mainWindow::~mainWindow()
 {
 }
@@ -112,8 +112,23 @@ void mainWindow::on_button_quit()
   hide();
 }
 
-void
-mainWindow::on_button_numbered(const Glib::ustring& data)
+void mainWindow::on_button_numbered(const Glib::ustring& data)
 {
   std::cout << data << " was pressed" << std::endl;
 }
+
+
+  // buttonConvert.signal_clicked().connect(
+  //   sigc::bind<Glib::ustring>(sigc::mem_fun(*this,
+  //     &mainWindow::on_button_numbered), "button 1") );
+
+
+  // buttonWebcam.signal_clicked().connect(
+  //   sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
+  //     &mainWindow::on_button_numbered), "button 2") );
+
+
+  // buttonQuit.signal_clicked().connect(sigc::mem_fun(*this,
+  //   &mainWindow::on_button_quit) );
+
+  // show_all_children();
