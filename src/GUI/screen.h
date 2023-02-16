@@ -10,6 +10,8 @@ public:
   mainWindow();           // class constructor
 
   void setHierarchy();    // setup widgets hierarchy
+  void setStyle();        // setup widgets style
+  void setBehaviour();    // setup widgets behaviour
 
   virtual ~mainWindow();  // class destructor
 
@@ -44,6 +46,8 @@ mainWindow::mainWindow():
 
   setHierarchy();
   setStyle();
+  setBehaviour();
+
   show_all_children();
 }
 
@@ -91,10 +95,8 @@ void mainWindow::setStyle(){
 }
 
 
-  // buttonQuit.signal_clicked().connect(sigc::mem_fun(*this,
-  //   &mainWindow::on_button_quit) );
+void mainWindow::setBehaviour(){
 
-  // show_all_children();
 }
 
 
