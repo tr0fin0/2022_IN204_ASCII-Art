@@ -9,8 +9,7 @@ public:
   // declarations with come after
   mainWindow();           // class constructor
 
-  void setHierarchy();    // class widgets hierarchy
-  void setWidgets();      // class widgets setup
+  void setHierarchy();    // setup widgets hierarchy
 
   virtual ~mainWindow();  // class destructor
 
@@ -52,39 +51,38 @@ mainWindow::mainWindow():
 
 void mainWindow::setHierarchy()
 {
-
-  std::string mainImagePath = pathRel2Abs("images/waves.png");
-  const char * mainImagePathConst = mainImagePath.c_str();
-
-  image  = Glib::wrap(gtk_image_new_from_file(mainImagePathConst), false);
-  // image  = Glib::wrap(gtk_image_new_from_file("/home/gustavo/Documentos/facul/ENSTA/GLObjOri/ASCII-Art/images/waves.png"), false);
-  // image  = Glib::wrap(gtk_image_new_from_file("/home/tr0fin0/Documents/git_repositories/ASCII-Art/images/waves.png"), false);
-
   // Window
   add(fixedWindow);
-  // add(fixed);
+
 
   // Fixed
-  fixedWindow.add(boxImg)
-  fixedWindow.add(boxReturn)
-  fixedWindow.add(boxButtons)
-  fixedWindow.move(boxImg,      10, 10)
-  fixedWindow.move(boxReturn,   10, 10)
-  fixedWindow.move(boxButtons,  200, 200)
-  // m_grid.add(buttonConvert);
-  // m_grid.add(buttonWebcam);
-  // m_grid.add(buttonWebconference);
-  // m_grid.attach(*image, 0, 0, 1, 1);
-  // m_grid.attach(buttonConvert, 1, 0, 1, 1);
-  // m_grid.attach(buttonWebcam, 2, 0, 1, 1);
-  // m_grid.attach(buttonWebconference, 3, 0, 1, 1);
-  // m_grid.attach_next_to(*image, buttonConvert, Gtk::POS_TOP, 2, 1);
-  // m_grid.attach_next_to(buttonQuit, buttonConvert, Gtk::POS_BOTTOM, 2, 1);
+  fixedWindow.add(boxImg);
+  fixedWindow.add(boxReturn);
+  fixedWindow.add(boxButtons);
+  fixedWindow.move(boxImg,      10, 10);
+  fixedWindow.move(boxReturn,   10, 10);
+  fixedWindow.move(boxButtons,  200, 200);
 
 
-  // Frame 1
+  // Image
+  std::string mainImagePath = pathRel2Abs("images/waves.png");
+  const char * mainImagePathConst = mainImagePath.c_str();
+  image  = Glib::wrap(gtk_image_new_from_file(mainImagePathConst), false);
+
+  boxImg.add(*image);
 
 
+  // Return
+  alignReturn.add(boxReturn);
+  boxReturn.pack_start(buttonQuit, true, true, 0);
+
+
+  // Buttons
+  alignButtons.add(boxButtons);
+  boxButtons.pack_start(buttonConvert, true, true, 0);
+  boxButtons.pack_start(buttonWebcam, true, true, 0);
+  boxButtons.pack_start(buttonWebconference, true, true, 0);
+}
 
 
   // buttonConvert.signal_clicked().connect(
