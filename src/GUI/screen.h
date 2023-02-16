@@ -30,7 +30,7 @@ private:
   Gtk::Label labelIP, labelLinks;
   Gtk::Style  *style;                       // images
   Gtk::Widget *image;
-  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonQuit;
+  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonReturn;
 };
 
 
@@ -79,7 +79,7 @@ void mainWindow::setHierarchy()
 
   // Return
   alignReturn.add(boxReturn);
-  boxReturn.pack_start(buttonQuit, true, true, 0);
+  boxReturn.pack_start(buttonReturn, true, true, 0);
 
 
   // Buttons
