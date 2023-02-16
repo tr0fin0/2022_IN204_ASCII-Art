@@ -1,7 +1,6 @@
 #include <iostream>
 #include <gtkmm.h>
 #include "../utils/utils.h"
-#include "../utils/utils.h"
 #include "../networkConnection/server.h"
 
 class mainWindow : public Gtk::Window 
@@ -22,7 +21,6 @@ private:
   void on_button_numbered(const Glib::ustring& data);
 
   // widgets declaration
-  // Gtk::Grid m_grid;
   Gtk::Fixed fixedWindow;                   // window main fixed
   Gtk::Box boxImg, boxReturn, boxButtons;
   Gtk::Alignment alignReturn, alignButtons;
@@ -39,10 +37,6 @@ mainWindow::mainWindow():
   boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
   boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
   boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL} 
-  // buttonConvert("Convert from File"),
-  // buttonWebcam("Webcam"),
-  // buttonWebconference("Webconference"),
-  // buttonQuit("Quit")
 {
   set_title("ASCII Art");
   set_default_size(1080, 720);
