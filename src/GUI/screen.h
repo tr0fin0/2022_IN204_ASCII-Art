@@ -10,6 +10,7 @@ class mainWindow : public Gtk::Window
 public:
   // declarations with come after
   mainWindow();           // class constructor
+  // Gtk::Window:set_resizable(mainWindow, false)
 
   void setHierarchy();    // setup widgets hierarchy
   void setStyle();        // setup widgets style
@@ -85,14 +86,14 @@ void mainWindow::setHierarchy()
 
   // Return
   alignReturn.add(boxReturn);
-  boxReturn.pack_start(buttonReturn, true, true, 0);
+  boxReturn.pack_start(buttonReturn, false, false, 0);
 
 
   // Buttons
   alignButtons.add(boxButtons);
-  boxButtons.pack_start(buttonConvert, true, true, 0);
-  boxButtons.pack_start(buttonWebcam, true, true, 0);
-  boxButtons.pack_start(buttonWebconference, true, true, 0);
+  boxButtons.pack_start(buttonConvert, false, false, 0);
+  boxButtons.pack_start(buttonWebcam, false, false, 0);
+  boxButtons.pack_start(buttonWebconference, false, false, 0);
 }
 
 
@@ -103,6 +104,7 @@ void mainWindow::setStyle(){
   set_border_width(windowB);
   set_visible(true);
   set_can_focus(false);
+  set_resizable(false);
 
   // Fixed
   fixedWindow.set_size_request(windowW, windowH);
@@ -128,6 +130,7 @@ void mainWindow::setStyle(){
   buttonReturn.set_visible(true);
   buttonReturn.set_can_focus(false);
   buttonReturn.set_focus_on_click(true);
+  buttonReturn.set_size_request(buttonReturnW, buttonReturnH);
   buttonReturn.set_border_width(buttonReturnB);
 
 
@@ -144,19 +147,22 @@ void mainWindow::setStyle(){
   buttonConvert.set_visible(true);
   buttonConvert.set_can_focus(false);
   buttonConvert.set_focus_on_click(true);
-  buttonConvert.set_border_width(buttonConvertB);
+  buttonConvert.set_size_request(buttonsW, buttonsH);
+  buttonConvert.set_border_width(buttonsB);
 
   buttonWebcam.set_label("webcam");
   buttonWebcam.set_visible(true);
   buttonWebcam.set_can_focus(false);
   buttonWebcam.set_focus_on_click(true);
-  buttonWebcam.set_border_width(buttonWebcamB);
+  buttonWebcam.set_size_request(buttonsW, buttonsH);
+  buttonWebcam.set_border_width(buttonsB);
 
   buttonWebconference.set_label("webconference");
   buttonWebconference.set_visible(true);
   buttonWebconference.set_can_focus(false);
   buttonWebconference.set_focus_on_click(true);
-  buttonWebconference.set_border_width(buttonWebconB);
+  buttonWebconference.set_size_request(buttonsW, buttonsH);
+  buttonWebconference.set_border_width(buttonsB);
 }
 
 
