@@ -75,7 +75,6 @@ void receiveFromClient(){
 
 }
 
-
 void be_server(){
     
     std::thread t2 = std::thread(receiveFromClient);

@@ -2,7 +2,8 @@
 #include <gtkmm/application.h>
 // #include "GUI/screen.h"
 // #include "GUI/screen_1.h"
-#include "networkConnection/tcp_s.cpp"
+// #include "networkConnection/tcp_s.cpp"
+#include "networkConnection/server.h"
 
 int main(){
     // run();
@@ -20,7 +21,7 @@ int main(){
         std::cin >> choice;
     }
     if(choice == 2){
-        be_client("147.250.224.185");
+        be_client("147.250.227.185");
     }
     if(choice == 3){
         VideoConverter v;
@@ -28,7 +29,7 @@ int main(){
     }
     else{
         system("hostname -I");
-        be_tcp_server();
+        be_server();
 }
     return 0;
 }
