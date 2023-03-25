@@ -102,6 +102,7 @@ void mainWindow::setStyle(){
   set_title("ASCII Art");
   set_default_size(windowW, windowH);
   set_border_width(windowB);
+  set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
   set_visible(true);
   set_can_focus(false);
   set_resizable(false);

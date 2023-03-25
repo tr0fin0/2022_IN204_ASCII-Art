@@ -1,13 +1,17 @@
 #include <string>
 
 
-int windowW = 1000;
-int windowH =  380;
-int windowB =   10;
+int imageW = 1000;
+int imageH = 380;
 
 
-int boxImgX = 0;
-int boxImgY = 0;
+int windowW = 1*imageW;
+int windowH = 1*imageH;
+int windowB = 10;
+
+
+int boxImgX = (windowW - imageW)/2;
+int boxImgY = (windowH - imageH)/2;
 
 
 int alignReturnW = 0;       // 0
