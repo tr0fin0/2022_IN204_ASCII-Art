@@ -22,7 +22,7 @@ public:
 private:
   // action handlers
   void on_button_quit();
-  void on_button_numbered(const Glib::ustring& data);
+  void buttonConvert_clicked();
 
   // widgets declaration
   Gtk::Fixed fixedWindow;                   // window main fixed
@@ -171,12 +171,44 @@ void mainWindow::setBehaviour(){
 
 }
 
-
-
-mainWindow::~mainWindow()
+void mainWindow::buttonConvert_clicked()
 {
-}
+  // TODO only opnn window if others are not open
+  // Get the number of open windows
+  Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
+  dialog.set_current_folder(pathRel2Abs("images"));
 
+  // Add response buttons to the dialog
+  dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  dialog.add_button("Open", Gtk::RESPONSE_OK);
+
+  // Show the dialog and wait for a response
+  int result = dialog.run();
+
+  // Check if the user clicked the "Open" button
+  if (result == Gtk::RESPONSE_OK)
+  {
+    // Get the selected file path from the dialog
+    std::string file_path = dialog.get_filename();
+
+    // Read the contents of the file
+    std::ifstream file(file_path);
+    if (file.is_open())
+    {
+      // std::string file_contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+      std::cout << "File contents:\n"
+                // << file_contents << std::endl;
+                << file_path << std::endl;
+      file.close();
+    }
+    else
+    {
+      std::cerr << "Failed to open file: " << file_path << std::endl;
+    }
+  }
+
+  std::cout << "convert" << std::endl;
+}
 
 void mainWindow::on_button_quit()
 {
