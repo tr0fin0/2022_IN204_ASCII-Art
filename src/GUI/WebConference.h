@@ -41,7 +41,15 @@ public:
     }
 
 private:
+    void on_button_quit();
+
     Gtk::TextView *m_textview;
     std::string m_ascii_text;
     Glib::Dispatcher m_dispatcher;
 };
+
+void WebConference::on_button_quit()
+{
+    // hide();
+    close();
+}
