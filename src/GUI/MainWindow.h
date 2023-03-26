@@ -5,19 +5,21 @@
 #include "../utils/utils.h"
 #include "../networkConnection/server.h"
 #include "WebConference.h"
+#include "ConvertFile.h"
 
-class mainWindow : public Gtk::Window
+class MainWindow : public Gtk::Window
 {
 public:
   // declarations with come after
-  mainWindow(); // class constructor
+  MainWindow(); // class constructor
 
-  virtual ~mainWindow(); // class destructor
+  virtual ~MainWindow(); // class destructor
 
 private:
   void setHierarchy();
   void setStyle();
   void setBehaviour();
+  void closeOtherWindows();
   void on_button_quit();
   void buttonConvert_clicked();
   void buttonReturn_clicked();
@@ -33,7 +35,7 @@ private:
   Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonReturn;
 };
 
-mainWindow::mainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
+MainWindow::MainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
                            boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
                            boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL}
 {
@@ -44,7 +46,7 @@ mainWindow::mainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
   show_all_children();
 }
 
-void mainWindow::setHierarchy()
+void MainWindow::setHierarchy()
 {
   // Window
   add(fixedWindow);
@@ -74,7 +76,7 @@ void mainWindow::setHierarchy()
   boxButtons.pack_start(buttonWebconference, false, false, 0);
 }
 
-void mainWindow::setStyle()
+void MainWindow::setStyle()
 {
   set_title("ASCII Art");
   set_default_size(windowW, windowH);
@@ -140,29 +142,30 @@ void mainWindow::setStyle()
   buttonWebconference.set_border_width(buttonsB);
 }
 
-void mainWindow::setBehaviour()
+void MainWindow::setBehaviour()
 {
-  buttonReturn.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonReturn_clicked));
-  buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonConvert_clicked));
-  buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonWebcam_clicked));
-  buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonWebconference_clicked));
+  buttonReturn.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonReturn_clicked));
+  buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConvert_clicked));
+  buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
+  buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
 }
 
-mainWindow::~mainWindow()
+MainWindow::~MainWindow()
 {
 }
 
-void mainWindow::on_button_quit()
+void MainWindow::on_button_quit()
 {
-  hide();
+  // hide();
+  close();
 }
 
-void mainWindow::buttonReturn_clicked()
+void MainWindow::buttonReturn_clicked()
 {
   std::cout << "return" << std::endl;
 }
 
-void mainWindow::buttonConvert_clicked()
+void MainWindow::buttonConvert_clicked()
 {
   // TODO only opnn window if others are not open
   // Get the number of open windows
@@ -186,10 +189,20 @@ void mainWindow::buttonConvert_clicked()
     std::ifstream file(file_path);
     if (file.is_open())
     {
-      // std::string file_contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-      std::cout << "File contents:\n"
-                // << file_contents << std::endl;
-                << file_path << std::endl;
+      auto windows = Gtk::Window::list_toplevels();
+      for (auto window : windows)
+      {
+        if (window != this)
+        {
+          window->close();
+        }
+      }
+
+      Gtk::Window *m_new_window = Gtk::manage(new ConvertFile(file_path));
+
+      m_new_window->show_all();
+
+
       file.close();
     }
     else
@@ -197,16 +210,13 @@ void mainWindow::buttonConvert_clicked()
       std::cerr << "Failed to open file: " << file_path << std::endl;
     }
   }
-
-  std::cout << "convert" << std::endl;
 }
 
-void mainWindow::buttonWebcam_clicked()
+void MainWindow::buttonWebcam_clicked()
 {
-  std::cout << "webcam" << std::endl;
 }
 
-void mainWindow::buttonWebconference_clicked()
+void MainWindow::buttonWebconference_clicked()
 {
   // Close all open windows except this one
   auto windows = Gtk::Window::list_toplevels();
@@ -218,7 +228,7 @@ void mainWindow::buttonWebconference_clicked()
     }
   }
 
-  // Gtk::Window* m_new_window = Gtk::manage(new mainWindow());
+  // Gtk::Window* m_new_window = Gtk::manage(new MainWindow());
   Gtk::Window *m_new_window = Gtk::manage(new WebConference());
   // WebConference m_new_window;
 
@@ -238,6 +248,4 @@ void mainWindow::buttonWebconference_clicked()
   //         std::this_thread::sleep_for(std::chrono::milliseconds(100));
   //     }
   // });
-
-  std::cout << "conference" << std::endl;
 }
