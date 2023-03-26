@@ -1,52 +1,42 @@
 #include <iostream>
+#include <fstream>
 #include <gtkmm.h>
 #include "dimensions.h"
 #include "../utils/utils.h"
 #include "../networkConnection/server.h"
 #include "WebConference.h"
 
-class mainWindow : public Gtk::Window 
+class mainWindow : public Gtk::Window
 {
 public:
   // declarations with come after
-  mainWindow();           // class constructor
-  // Gtk::Window:set_resizable(mainWindow, false)
+  mainWindow(); // class constructor
 
-  void setHierarchy();    // setup widgets hierarchy
-  void setStyle();        // setup widgets style
-  void setBehaviour();    // setup widgets behaviour
-
-  virtual ~mainWindow();  // class destructor
-
+  virtual ~mainWindow(); // class destructor
 
 private:
-  // action handlers
+  void setHierarchy();
+  void setStyle();
+  void setBehaviour();
   void on_button_quit();
   void buttonConvert_clicked();
+  void buttonReturn_clicked();
+  void buttonWebcam_clicked();
+  void buttonWebconference_clicked();
 
   // widgets declaration
-  Gtk::Fixed fixedWindow;                   // window main fixed
+  Gtk::Fixed fixedWindow;
   Gtk::Box boxImg, boxReturn, boxButtons;
   Gtk::Alignment alignReturn, alignButtons;
-  Gtk::Entry entryIP;                       // input from user
-  Gtk::Label labelIP, labelLinks;
-  Gtk::Style  *style;                       // images
+  Gtk::Style *style;
   Gtk::Widget *image;
   Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonReturn;
 };
 
-
-
-mainWindow::mainWindow():
-  boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
-  boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
-  boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL} 
+mainWindow::mainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
+                           boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
+                           boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL}
 {
-  set_title("ASCII Art");
-  set_default_size(windowW, windowH);
-  set_border_width(windowB);
-  set_visible(true);
-
   setHierarchy();
   setStyle();
   setBehaviour();
@@ -54,13 +44,10 @@ mainWindow::mainWindow():
   show_all_children();
 }
 
-
-
 void mainWindow::setHierarchy()
 {
   // Window
   add(fixedWindow);
-
 
   // Fixed
   fixedWindow.add(boxImg);
@@ -70,24 +57,15 @@ void mainWindow::setHierarchy()
   fixedWindow.move(boxReturn, boxReturnX, boxReturnY);
   fixedWindow.move(boxButtons, boxButtonsX, boxButtonsY);
 
-
   // Image
   std::string mainImagePath = pathRel2Abs("images/waves.png");
-  const char * mainImagePathConst = mainImagePath.c_str();
-  image  = Glib::wrap(gtk_image_new_from_file(mainImagePathConst), false);
-
+  const char *mainImagePathConst = mainImagePath.c_str();
+  image = Glib::wrap(gtk_image_new_from_file(mainImagePathConst), false);
   boxImg.add(*image);
-
-  // const GdkPixbuf *pb = gtk_image_get_pixbuf(GTK_IMAGE(image));
-  // printf("image is %ux%u pixels\n", gdk_pixbuf_get_width(pb), gdk_pixbuf_get_height(pb));
-  // printf(image->get_height());
-  // std::cout << image->get_height();
-
 
   // Return
   alignReturn.add(boxReturn);
   boxReturn.pack_start(buttonReturn, false, false, 0);
-
 
   // Buttons
   alignButtons.add(boxButtons);
@@ -96,9 +74,8 @@ void mainWindow::setHierarchy()
   boxButtons.pack_start(buttonWebconference, false, false, 0);
 }
 
-
-
-void mainWindow::setStyle(){
+void mainWindow::setStyle()
+{
   set_title("ASCII Art");
   set_default_size(windowW, windowH);
   set_border_width(windowB);
@@ -112,11 +89,9 @@ void mainWindow::setStyle(){
   fixedWindow.set_visible(true);
   fixedWindow.set_can_focus(false);
 
-
   // Image
   boxImg.set_visible(true);
   boxImg.set_can_focus(false);
-
 
   // Return
   alignReturn.set_size_request(alignReturnW, alignReturnH);
@@ -133,7 +108,6 @@ void mainWindow::setStyle(){
   buttonReturn.set_focus_on_click(true);
   buttonReturn.set_size_request(buttonReturnW, buttonReturnH);
   buttonReturn.set_border_width(buttonReturnB);
-
 
   // Buttons
   alignButtons.set_size_request(alignButtonsW, alignButtonsH);
@@ -166,9 +140,26 @@ void mainWindow::setStyle(){
   buttonWebconference.set_border_width(buttonsB);
 }
 
+void mainWindow::setBehaviour()
+{
+  buttonReturn.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonReturn_clicked));
+  buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonConvert_clicked));
+  buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonWebcam_clicked));
+  buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &mainWindow::buttonWebconference_clicked));
+}
 
-void mainWindow::setBehaviour(){
+mainWindow::~mainWindow()
+{
+}
 
+void mainWindow::on_button_quit()
+{
+  hide();
+}
+
+void mainWindow::buttonReturn_clicked()
+{
+  std::cout << "return" << std::endl;
 }
 
 void mainWindow::buttonConvert_clicked()
@@ -210,9 +201,9 @@ void mainWindow::buttonConvert_clicked()
   std::cout << "convert" << std::endl;
 }
 
-void mainWindow::on_button_quit()
+void mainWindow::buttonWebcam_clicked()
 {
-  hide();
+  std::cout << "webcam" << std::endl;
 }
 
 void mainWindow::buttonWebconference_clicked()
@@ -250,5 +241,3 @@ void mainWindow::buttonWebconference_clicked()
 
   std::cout << "conference" << std::endl;
 }
-
-  // show_all_children();
