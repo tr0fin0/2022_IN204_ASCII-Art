@@ -3,7 +3,7 @@
 #include "dimensions.h"
 #include "../utils/utils.h"
 #include "../networkConnection/server.h"
-// #include "../networkConnection/tcp_s.cpp"
+#include "WebConference.h"
 
 class mainWindow : public Gtk::Window 
 {
@@ -183,23 +183,40 @@ void mainWindow::on_button_quit()
   hide();
 }
 
-void mainWindow::on_button_numbered(const Glib::ustring& data)
+void mainWindow::buttonWebconference_clicked()
 {
-  std::cout << data << " was pressed" << std::endl;
+  // Close all open windows except this one
+  auto windows = Gtk::Window::list_toplevels();
+  for (auto window : windows)
+  {
+    if (window != this)
+    {
+      window->close();
+    }
+  }
+
+  // Gtk::Window* m_new_window = Gtk::manage(new mainWindow());
+  Gtk::Window *m_new_window = Gtk::manage(new WebConference());
+  // WebConference m_new_window;
+
+  // Show the new window
+  m_new_window->show_all();
+  // m_new_window.show_all();
+
+  // std::thread loop_thread([&m_new_window]() {
+  //     while (true) {
+  //         // Faça algo para atualizar a lista de caracteres ASCII, por exemplo, ler de uma webcam
+  //         std::string ascii_text = "ASCII Art";
+
+  //         // Atualize o TextView na thread principal
+  //         m_new_window.updateAsciiText(ascii_text);
+
+  //         // Aguarde um tempo antes de atualizar novamente
+  //         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  //     }
+  // });
+
+  std::cout << "conference" << std::endl;
 }
-
-
-  // buttonConvert.signal_clicked().connect(
-  //   sigc::bind<Glib::ustring>(sigc::mem_fun(*this,
-  //     &mainWindow::on_button_numbered), "button 1") );
-
-
-  // buttonWebcam.signal_clicked().connect(
-  //   sigc::bind<Glib::ustring>( sigc::mem_fun(*this,
-  //     &mainWindow::on_button_numbered), "button 2") );
-
-
-  // buttonReturn.signal_clicked().connect(sigc::mem_fun(*this,
-  //   &mainWindow::on_button_quit) );
 
   // show_all_children();
