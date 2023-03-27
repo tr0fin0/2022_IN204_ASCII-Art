@@ -78,13 +78,46 @@ void ConvertFile::setHierarchy(std::string pathFile)
     boxButtons.pack_start(buttonSave, false, false, 0);
 }
 
-private:
-    void on_button_quit();
+void ConvertFile::setStyle()
+{
+    set_title("ASCII Convert");
+    set_default_size(windowW, windowH);
+    set_border_width(10);
+    set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
+    set_visible(true);
+    set_can_focus(false);
+    set_resizable(false);
 
-    Gtk::TextView *m_textview;
-    std::string m_ascii_text;
-    Glib::Dispatcher m_dispatcher;
-};
+    fixedWindow.set_size_request(windowW, windowH);
+    fixedWindow.set_visible(true);
+    fixedWindow.set_can_focus(false);
+
+    boxImg.set_visible(true);
+    boxImg.set_can_focus(false);
+
+    alignButtons.set_size_request(0, 0);
+    alignButtons.set_visible(true);
+    alignButtons.set_can_focus(false);
+    alignButtons.set_border_width(10);
+
+    boxButtons.set_visible(true);
+    boxButtons.set_can_focus(false);
+
+    buttonConvert.set_label("convert");
+    buttonConvert.set_visible(true);
+    buttonConvert.set_can_focus(false);
+    buttonConvert.set_focus_on_click(true);
+    buttonConvert.set_size_request(100, 10);
+    buttonConvert.set_border_width(2);
+
+    buttonSave.set_label("save");
+    buttonSave.set_visible(true);
+    buttonSave.set_can_focus(false);
+    buttonSave.set_focus_on_click(true);
+    buttonSave.set_size_request(100, 10);
+    buttonSave.set_border_width(2);
+    buttonSave.set_sensitive(false);
+}
 
 
 void ConvertFile::on_button_quit()
