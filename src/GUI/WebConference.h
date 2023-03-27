@@ -12,6 +12,8 @@ public:
         int windowH = 500;
 
         m_textview = Gtk::manage(new Gtk::TextView());
+        m_textview->set_editable(false);
+        m_textview->set_cursor_visible(false);
         m_textview->set_size_request(windowW, windowH);
 
         Gtk::Box *box = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
@@ -50,6 +52,5 @@ private:
 
 void WebConference::on_button_quit()
 {
-    // hide();
     close();
 }
