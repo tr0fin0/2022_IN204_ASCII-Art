@@ -21,7 +21,6 @@ private:
   void setBehaviour();
   void on_button_quit();
   void buttonConvert_clicked();
-  void buttonReturn_clicked();
   void buttonWebcam_clicked();
   void buttonWebconference_clicked();
 
@@ -103,12 +102,13 @@ void MainWindow::setStyle()
   boxReturn.set_visible(true);
   boxReturn.set_can_focus(false);
 
-  buttonReturn.set_label("back");
+  buttonReturn.set_label(getHostname());
   buttonReturn.set_visible(true);
   buttonReturn.set_can_focus(false);
   buttonReturn.set_focus_on_click(true);
   buttonReturn.set_size_request(buttonReturnW, buttonReturnH);
   buttonReturn.set_border_width(buttonReturnB);
+  buttonReturn.set_sensitive(false);
 
   // Buttons
   alignButtons.set_size_request(alignButtonsW, alignButtonsH);
@@ -143,7 +143,6 @@ void MainWindow::setStyle()
 
 void MainWindow::setBehaviour()
 {
-  buttonReturn.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonReturn_clicked));
   buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConvert_clicked));
   buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
   buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
@@ -156,11 +155,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_button_quit()
 {
   close();
-}
-
-void MainWindow::buttonReturn_clicked()
-{
-  std::cout << "return" << std::endl;
 }
 
 void MainWindow::buttonConvert_clicked()
@@ -230,16 +224,16 @@ void MainWindow::buttonWebconference_clicked()
   // Show the new window
   m_new_window->show_all();
 
-  // std::thread loop_thread([&m_new_window]() {
-  //     while (true) {
-  //         // Faça algo para atualizar a lista de caracteres ASCII, por exemplo, ler de uma webcam
-  //         std::string ascii_text = "ASCII Art";
+  // std::thread loop_thread([&m_new_window]()
+  //                         {
+  //   while (true) {
+  //     // Faça algo para atualizar a lista de caracteres ASCII, por exemplo, ler de uma webcam
+  //     std::string ascii_text = "ASCII Art";
 
-  //         // Atualize o TextView na thread principal
-  //         m_new_window->updateAsciiText(ascii_text);
+  //     // Atualize o TextView na thread principal
+  //     m_new_window->updateAsciiText(ascii_text);
 
-  //         // Aguarde um tempo antes de atualizar novamente
-  //         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  //     }
-  // });
+  //     // Aguarde um tempo antes de atualizar novamente
+  //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  //   } });
 }
