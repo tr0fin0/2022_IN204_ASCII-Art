@@ -3,20 +3,23 @@
 #include <thread>
 #include <chrono>
 #include <gdkmm/pixbuf.h>
+//#include "../converters/ImageConverter.h"
 
 class ConvertFile : public Gtk::Window
 {
 public:
-    ConvertFile(std::string pathFile);
+    ConvertFile(std::string filePath);
 
 private:
-    void setHierarchy(std::string pathFile);
+    void setHierarchy(std::string filePath);
     void setStyle();
     void setBehaviour();
     void on_button_quit();
     void buttonConvert_clicked();
     void buttonSave_clicked();
 
+
+    std::string filePath;
     Gtk::Fixed fixedWindow;
     Gtk::Box boxImg, boxButtons;
     Gtk::Alignment alignButtons;
@@ -24,17 +27,18 @@ private:
     Gtk::Button buttonConvert, buttonSave;
 };
 
-ConvertFile::ConvertFile(std::string pathFile) : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
+ConvertFile::ConvertFile(std::string filePath) : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
                                                  boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL}
 {
-    setHierarchy(pathFile);
+    this->filePath = filePath;
+    setHierarchy(filePath);
     setStyle();
     setBehaviour();
 
     show_all_children();
 }
 
-void ConvertFile::setHierarchy(std::string pathFile)
+void ConvertFile::setHierarchy(std::string filePath)
 {
     int windowW = 1000;
     int windowH = 500;
@@ -45,7 +49,7 @@ void ConvertFile::setHierarchy(std::string pathFile)
     fixedWindow.move(boxImg, 0, 0);
     fixedWindow.move(boxButtons, 448, 224);
 
-    const char *pathConst = pathFile.c_str();
+    const char *pathConst = filePath.c_str();
     image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
 
     // Load the image
@@ -134,6 +138,13 @@ void ConvertFile::on_button_quit()
 void ConvertFile::buttonConvert_clicked()
 {
     buttonSave.set_sensitive(true);
+
+    ImageConverter imageConverter(this->filePath);
+    imageConverter.convertGrayScale();
+    imageConverter.resize(100, 150);
+    imageConverter.print_ASCII();
+    
+
 }
 
 void ConvertFile::buttonSave_clicked()

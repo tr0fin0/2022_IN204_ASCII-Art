@@ -67,6 +67,9 @@ public:
     //function to show in the terminal the ASCII image
     void print_ASCII();
     void print_ASCII(std::unique_ptr<char[]> textResult);
+
+    //function that returns ASCII image in a string
+    std::string getStringASCII();
 };
 
 void Converter::setImage(cv::Mat img){
@@ -198,7 +201,8 @@ void Converter:: print_ASCII(std::unique_ptr<char[]> textResult){
 }
 
 void Converter:: print_ASCII(){
-    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 2);
+    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 3);
+
     for (int i = 0; i < img.rows; i++)
     {
         for (int j = 0; j < img.cols; j++)
@@ -206,4 +210,13 @@ void Converter:: print_ASCII(){
             std::cout << textResult[(img.cols*i) + j];
         }
     }
+    
+}
+
+std::string Converter::getStringASCII(){
+    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 3);
+    std::string ASCIIString{textResult.get()};
+
+    return ASCIIString;
+
 }
