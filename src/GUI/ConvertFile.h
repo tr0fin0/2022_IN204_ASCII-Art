@@ -33,17 +33,50 @@ ConvertFile::ConvertFile(std::string pathFile) : boxImg{Gtk::Orientation::ORIENT
     show_all_children();
 }
 
-        const char *pathConst = pathFile.c_str();
-        Gtk::Widget *image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
+void ConvertFile::setHierarchy(std::string pathFile)
+{
+    int windowW = 1000;
+    int windowH = 500;
 
-        set_title("ASCII Convert");
-        set_default_size(windowW, windowH);
-        set_border_width(10);
-        set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
-        set_visible(true);
-        set_can_focus(false);
-        set_resizable(false);
-    }
+    add(fixedWindow);
+    fixedWindow.add(boxImg);
+    fixedWindow.add(boxButtons);
+    fixedWindow.move(boxImg, 0, 0);
+    fixedWindow.move(boxButtons, 448, 224);
+
+    const char *pathConst = pathFile.c_str();
+    image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
+
+    // Load the image
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(pathConst);
+
+    // Get the original width and height of the image
+    int originalWidth = pixbuf->get_width();
+    int originalHeight = pixbuf->get_height();
+
+    // Calculate the new width and height of the image while maintaining the aspect ratio
+    int maxWidth = 400;  // Set the maximum width of the image
+    int maxHeight = 400; // Set the maximum height of the image
+    double widthRatio = static_cast<double>(maxWidth) / static_cast<double>(originalWidth);
+    double heightRatio = static_cast<double>(maxHeight) / static_cast<double>(originalHeight);
+    double ratio = std::min(widthRatio, heightRatio);
+    int newWidth = static_cast<int>(originalWidth * ratio);
+    int newHeight = static_cast<int>(originalHeight * ratio);
+
+    // Scale the image to the new width and height
+    pixbuf = pixbuf->scale_simple(newWidth, newHeight, Gdk::INTERP_BILINEAR);
+
+    // Create a new Gtk::Image from the scaled image
+    Gtk::Image *image = Gtk::manage(new Gtk::Image(pixbuf));
+    boxImg.add(*image);
+
+    int imageW = image->get_allocated_width();
+    int imageH = image->get_allocated_height();
+
+    alignButtons.add(boxButtons);
+    boxButtons.pack_start(buttonConvert, false, false, 0);
+    boxButtons.pack_start(buttonSave, false, false, 0);
+}
 
 private:
     void on_button_quit();
