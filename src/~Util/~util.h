@@ -18,12 +18,12 @@ void saveASCIIArtAsImage(const std::string& asciiArt, int widthInChars, int heig
     // Cria um contexto Cairo para a superfície
     cairo_t* cr = cairo_create(surface);
 
-    // Define o preenchimento da imagem como branco
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-    cairo_paint(cr);
-
     // Define a cor de preenchimento como preto
     cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+    cairo_paint(cr);
+
+    // Define o preenchimento da imagem como branco
+    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
 
     // Define a fonte e o tamanho da fonte para os caracteres
     cairo_select_font_face(cr, "monospace", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
