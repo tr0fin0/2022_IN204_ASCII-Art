@@ -129,3 +129,13 @@ void ConvertFile::on_button_quit()
 {
     close();
 }
+void ConvertFile::buttonConvert_clicked()
+{
+    buttonSave.set_sensitive(true);
+}
+
+void ConvertFile::buttonSave_clicked()
+{
+    buttonConvert.set_sensitive(false);
+    buttonSave.set_sensitive(false);
+}
