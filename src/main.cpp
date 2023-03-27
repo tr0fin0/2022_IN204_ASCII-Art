@@ -1,16 +1,17 @@
 #include "~Util/~util.h"
 #include <gtkmm/application.h>
-// #include "GUI/screen.h"
+#include "GUI/MainWindow.h"
 // #include "GUI/screen_1.h"
 // #include "networkConnection/tcp_s.cpp"
-#include "networkConnection/server.h"
+// #include "networkConnection/server.h"
 
 int main(){
     // run();
     
-    // auto app = Gtk::Application::create("org.gtkmm.example");
+    auto app = Gtk::Application::create("org.gtkmm.example");
+    MainWindow Window;
 
-    // mainWindow Window;
+    return app->run(Window);
 
     // Shows the window and returns when it is closed.
     // return app->run(Window);
