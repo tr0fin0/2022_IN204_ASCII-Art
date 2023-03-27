@@ -33,7 +33,7 @@ void sendToServer(const char *server_IP_address){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 3).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
         {
         std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
         }        

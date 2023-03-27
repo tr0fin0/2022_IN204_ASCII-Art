@@ -172,7 +172,7 @@ void Converter::convertSlice(cv::Mat img, char *textResult, int grayScaleType, i
 }
 
 std::unique_ptr<char[]> Converter::parallelConvert(const cv::Mat& img, int grayScaleType, int numThreads = 1){
-    
+
     auto textResult = std::make_unique<char[]>(img.rows * img.cols);
 
     std::vector<std::thread> workers;
@@ -215,7 +215,18 @@ void Converter:: print_ASCII(){
 
 std::string Converter::getStringASCII(){
     std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 3);
-    std::string ASCIIString{textResult.get()};
+
+    std::string ASCIIString;
+
+    for (int i = 0; i < img.rows; i++)
+    {
+        for (int j = 0; j < img.cols; j++)
+        {
+            ASCIIString.push_back(textResult[(img.cols*i) + j]);
+        }
+    }
+
+    
 
     return ASCIIString;
 

@@ -141,10 +141,15 @@ void ConvertFile::buttonConvert_clicked()
     buttonConvert.set_sensitive(false);
 
     ImageConverter imageConverter(this->filePath);
-    imageConverter.convertGrayScale();
-    imageConverter.resize(100, 150);
-    imageConverter.print_ASCII();
     
+    std::string newFileLocation = generateNewFileLocation(this->filePath);
+    
+    imageConverter.convertGrayScale();
+    imageConverter.resize(100, 100);
+
+    std::string ASCII_ART = imageConverter.getStringASCII();
+
+    saveASCIIArtAsImage(ASCII_ART, 100, 100, 500, 500, newFileLocation);
 
 }
 
