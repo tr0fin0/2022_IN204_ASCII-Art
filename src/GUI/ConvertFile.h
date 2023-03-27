@@ -45,9 +45,9 @@ void ConvertFile::setHierarchy(std::string filePath)
 
     add(fixedWindow);
     fixedWindow.add(boxImg);
-    fixedWindow.add(boxButtons);
+    fixedWindow.add(alignButtons);
     fixedWindow.move(boxImg, 0, 0);
-    fixedWindow.move(boxButtons, 448, 224);
+    fixedWindow.move(alignButtons, 448, 224);
 
     const char *pathConst = filePath.c_str();
     image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
