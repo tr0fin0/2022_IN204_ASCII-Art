@@ -138,6 +138,7 @@ void ConvertFile::on_button_quit()
 void ConvertFile::buttonConvert_clicked()
 {
     buttonSave.set_sensitive(true);
+    buttonConvert.set_sensitive(false);
 
     ImageConverter imageConverter(this->filePath);
     imageConverter.convertGrayScale();
