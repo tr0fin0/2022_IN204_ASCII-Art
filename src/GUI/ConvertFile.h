@@ -2,6 +2,7 @@
 #include <glibmm/dispatcher.h>
 #include <thread>
 #include <chrono>
+#include <gdkmm/pixbuf.h>
 
 class ConvertFile : public Gtk::Window
 {
@@ -129,6 +130,7 @@ void ConvertFile::on_button_quit()
 {
     close();
 }
+
 void ConvertFile::buttonConvert_clicked()
 {
     buttonSave.set_sensitive(true);
