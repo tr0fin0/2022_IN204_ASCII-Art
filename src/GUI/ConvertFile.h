@@ -6,10 +6,32 @@
 class ConvertFile : public Gtk::Window
 {
 public:
-    ConvertFile(std::string pathFile)
-    {
-        int windowW = 500;
-        int windowH = 500;
+    ConvertFile(std::string pathFile);
+
+private:
+    void setHierarchy(std::string pathFile);
+    void setStyle();
+    void setBehaviour();
+    void on_button_quit();
+    void buttonConvert_clicked();
+    void buttonSave_clicked();
+
+    Gtk::Fixed fixedWindow;
+    Gtk::Box boxImg, boxButtons;
+    Gtk::Alignment alignButtons;
+    Gtk::Widget *image;
+    Gtk::Button buttonConvert, buttonSave;
+};
+
+ConvertFile::ConvertFile(std::string pathFile) : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
+                                                 boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL}
+{
+    setHierarchy(pathFile);
+    setStyle();
+    setBehaviour();
+
+    show_all_children();
+}
 
         const char *pathConst = pathFile.c_str();
         Gtk::Widget *image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
