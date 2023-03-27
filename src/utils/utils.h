@@ -1,6 +1,9 @@
 #include <string>
 #include <glibmm.h>
 #include <giomm.h>
+#include <iostream>
+#include <cstdio>
+#include <cstring>
 
 
 // erase the last N characthers of string
@@ -20,3 +23,21 @@ std::string pathRel2Abs(std::string relpath) {
 
   return eraseLastN(file->get_path(), 11 + relpath.length()) + relpath;
 };
+
+std::string getHostname() {
+    std::string result = "";
+    FILE* pipe = popen("hostname -I", "r");
+    if (!pipe) return result;
+
+    char buffer[128];
+    while (fgets(buffer, sizeof(buffer), pipe) != NULL) {
+        result += buffer;
+    }
+
+    pclose(pipe);
+    // Remove trailing newline character if it exists
+    if (!result.empty() && result[result.length()-1] == '\n') {
+        result.erase(result.length()-1);
+    }
+    return result;
+}
