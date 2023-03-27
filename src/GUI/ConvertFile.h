@@ -119,6 +119,11 @@ void ConvertFile::setStyle()
     buttonSave.set_sensitive(false);
 }
 
+void ConvertFile::setBehaviour()
+{
+    buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &ConvertFile::buttonConvert_clicked));
+    buttonSave.signal_clicked().connect(sigc::mem_fun(*this, &ConvertFile::buttonSave_clicked));
+}
 
 void ConvertFile::on_button_quit()
 {
