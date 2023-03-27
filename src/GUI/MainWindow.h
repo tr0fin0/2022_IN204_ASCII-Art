@@ -19,7 +19,6 @@ private:
   void setHierarchy();
   void setStyle();
   void setBehaviour();
-  void closeOtherWindows();
   void on_button_quit();
   void buttonConvert_clicked();
   void buttonReturn_clicked();
@@ -156,7 +155,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_button_quit()
 {
-  // hide();
   close();
 }
 
@@ -167,7 +165,7 @@ void MainWindow::buttonReturn_clicked()
 
 void MainWindow::buttonConvert_clicked()
 {
-  // TODO only opnn window if others are not open
+  // TODO only open window if others are not open
   // Get the number of open windows
   Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
   dialog.set_current_folder(pathRel2Abs("images"));
@@ -189,6 +187,7 @@ void MainWindow::buttonConvert_clicked()
     std::ifstream file(file_path);
     if (file.is_open())
     {
+      // close all open windows except this one
       auto windows = Gtk::Window::list_toplevels();
       for (auto window : windows)
       {
@@ -201,7 +200,6 @@ void MainWindow::buttonConvert_clicked()
       Gtk::Window *m_new_window = Gtk::manage(new ConvertFile(file_path));
 
       m_new_window->show_all();
-
 
       file.close();
     }
@@ -218,7 +216,7 @@ void MainWindow::buttonWebcam_clicked()
 
 void MainWindow::buttonWebconference_clicked()
 {
-  // Close all open windows except this one
+  // close all open windows except this one
   auto windows = Gtk::Window::list_toplevels();
   for (auto window : windows)
   {
