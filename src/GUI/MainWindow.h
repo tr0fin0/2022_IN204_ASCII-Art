@@ -52,11 +52,11 @@ void MainWindow::setHierarchy()
 
   // Fixed
   fixedWindow.add(boxImg);
-  fixedWindow.add(boxReturn);
-  fixedWindow.add(boxButtons);
+  fixedWindow.add(alignReturn);
+  fixedWindow.add(alignButtons);
   fixedWindow.move(boxImg, boxImgX, boxImgY);
-  fixedWindow.move(boxReturn, boxReturnX, boxReturnY);
-  fixedWindow.move(boxButtons, boxButtonsX, boxButtonsY);
+  fixedWindow.move(alignReturn, boxReturnX, boxReturnY);
+  fixedWindow.move(alignButtons, boxButtonsX, boxButtonsY);
 
   // Image
   std::string mainImagePath = pathRel2Abs("images/waves.png");
@@ -165,7 +165,6 @@ void MainWindow::buttonReturn_clicked()
 
 void MainWindow::buttonConvert_clicked()
 {
-  // TODO only open window if others are not open
   // Get the number of open windows
   Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
   dialog.set_current_folder(pathRel2Abs("images"));
@@ -197,7 +196,7 @@ void MainWindow::buttonConvert_clicked()
         }
       }
 
-      Gtk::Window *m_new_window = Gtk::manage(new ConvertFile(file_path));
+      Gtk::Window *m_new_window = new ConvertFile(file_path);
 
       m_new_window->show_all();
 
@@ -226,13 +225,10 @@ void MainWindow::buttonWebconference_clicked()
     }
   }
 
-  // Gtk::Window* m_new_window = Gtk::manage(new MainWindow());
-  Gtk::Window *m_new_window = Gtk::manage(new WebConference());
-  // WebConference m_new_window;
+  WebConference *m_new_window = new WebConference();
 
   // Show the new window
   m_new_window->show_all();
-  // m_new_window.show_all();
 
   // std::thread loop_thread([&m_new_window]() {
   //     while (true) {
@@ -240,7 +236,7 @@ void MainWindow::buttonWebconference_clicked()
   //         std::string ascii_text = "ASCII Art";
 
   //         // Atualize o TextView na thread principal
-  //         m_new_window.updateAsciiText(ascii_text);
+  //         m_new_window->updateAsciiText(ascii_text);
 
   //         // Aguarde um tempo antes de atualizar novamente
   //         std::this_thread::sleep_for(std::chrono::milliseconds(100));
