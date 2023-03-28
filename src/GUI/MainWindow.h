@@ -253,17 +253,4 @@ void MainWindow::buttonWebconference_clicked()
 
   // Show the new window
   m_new_window->show_all();
-
-  // std::thread loop_thread([&m_new_window]()
-  //                         {
-  //   while (true) {
-  //     // Faça algo para atualizar a lista de caracteres ASCII, por exemplo, ler de uma webcam
-  //     std::string ascii_text = "ASCII Art";
-
-  //     // Atualize o TextView na thread principal
-  //     m_new_window->updateAsciiText(ascii_text);
-
-  //     // Aguarde um tempo antes de atualizar novamente
-  //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  //   } });
 }
