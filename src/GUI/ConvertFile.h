@@ -190,4 +190,43 @@ void ConvertFile::buttonSave_clicked()
 {
     buttonConvert.set_sensitive(false);
     buttonSave.set_sensitive(false);
+
+        Gtk::FileChooserDialog dialog("Save Image", Gtk::FILE_CHOOSER_ACTION_SAVE);
+    dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+    dialog.add_button("_Save", Gtk::RESPONSE_OK);
+
+    // Set the default file name and filter
+    dialog.set_current_name("image.png");
+    dialog.set_filter(Gtk::FileFilter::create());
+    dialog.get_filter()->set_name("PNG Images");
+    dialog.get_filter()->add_mime_type("image/png");
+
+    // Show the dialog and wait for a response
+    int result = dialog.run();
+
+    // If the user selects a file and clicks the "Save" button
+    if (result == Gtk::RESPONSE_OK) {
+      // Get the selected file path
+      std::string filename = dialog.get_filename();
+
+      // Load the image from a file
+      std::string imagePath = "image.jpg";
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(imagePath);
+
+      // Scale the image to a desired size while preserving aspect ratio
+      int desiredWidth = 800;
+      int desiredHeight = 600;
+      double aspectRatio = (double)pixbuf->get_width() / (double)pixbuf->get_height();
+      if (aspectRatio > 1.0) {
+        // Landscape image
+        desiredHeight = (int)((double)desiredWidth / aspectRatio);
+      } else {
+        // Portrait image
+        desiredWidth = (int)((double)desiredHeight * aspectRatio);
+      }
+      pixbuf = pixbuf->scale_simple(desiredWidth, desiredHeight, Gdk::INTERP_BILINEAR);
+
+      // Save the scaled image to the selected file
+      pixbuf->save(filename, "png");
+    }
 }
