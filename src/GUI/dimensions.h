@@ -17,9 +17,9 @@ int boxImgY = (windowH - imageH)/2;
 int alignReturnW = 0;       // 0
 int alignReturnH = 0;       // 0
 int alignReturnB = 0;       // 0
-int buttonReturnW  = 80;    // 10
-int buttonReturnH  = 10;    // 10
-int buttonReturnB  = 10;    // 10
+int buttonIPW  = 80;    // 10
+int buttonIPH  = 10;    // 10
+int buttonIPB  = 10;    // 10
 int boxReturnX = boxImgX;
 int boxReturnY = boxImgY;
 

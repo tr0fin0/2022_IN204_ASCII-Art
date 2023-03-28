@@ -21,6 +21,7 @@ private:
   void setStyle();
   void setBehaviour();
   void on_button_quit();
+  void buttonIP_clicked();
   void buttonConvert_clicked();
   void buttonWebcam_clicked();
   void buttonWebconference_clicked();
@@ -31,7 +32,7 @@ private:
   Gtk::Alignment alignReturn, alignButtons;
   Gtk::Style *style;
   Gtk::Widget *image;
-  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonReturn;
+  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonIP;
 };
 
 MainWindow::MainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
@@ -66,7 +67,7 @@ void MainWindow::setHierarchy()
 
   // Return
   alignReturn.add(boxReturn);
-  boxReturn.pack_start(buttonReturn, false, false, 0);
+  boxReturn.pack_start(buttonIP, false, false, 0);
 
   // Buttons
   alignButtons.add(boxButtons);
@@ -103,13 +104,14 @@ void MainWindow::setStyle()
   boxReturn.set_visible(true);
   boxReturn.set_can_focus(false);
 
-  buttonReturn.set_label(getHostname());
-  buttonReturn.set_visible(true);
-  buttonReturn.set_can_focus(false);
-  buttonReturn.set_focus_on_click(true);
-  buttonReturn.set_size_request(buttonReturnW, buttonReturnH);
-  buttonReturn.set_border_width(buttonReturnB);
-  buttonReturn.set_sensitive(false);
+  // buttonIP.set_label(getHostname());
+  buttonIP.set_label("get IP");
+  buttonIP.set_visible(true);
+  buttonIP.set_can_focus(false);
+  buttonIP.set_focus_on_click(true);
+  buttonIP.set_size_request(buttonIPW, buttonIPH);
+  buttonIP.set_border_width(buttonIPB);
+  buttonIP.set_sensitive(true);
 
   // Buttons
   alignButtons.set_size_request(alignButtonsW, alignButtonsH);
@@ -144,6 +146,7 @@ void MainWindow::setStyle()
 
 void MainWindow::setBehaviour()
 {
+  buttonIP.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonIP_clicked));
   buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConvert_clicked));
   buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
   buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
@@ -157,6 +160,12 @@ void MainWindow::on_button_quit()
 {
   close();
 }
+
+void MainWindow::buttonIP_clicked()
+{
+  buttonIP.set_label(getHostname());
+}
+
 
 void MainWindow::buttonConvert_clicked()
 {
