@@ -16,14 +16,13 @@ private:
     void setBehaviour();
     void on_button_quit();
     void buttonConvert_clicked();
-    void buttonSave_clicked();
 
     std::string filePath;
     Gtk::Fixed fixedWindow;
     Gtk::Box boxImg, boxConvert, boxButtons;
     Gtk::Alignment alignButtons;
     Gtk::Widget *image, *imageConvert;
-    Gtk::Button buttonConvert, buttonSave;
+    Gtk::Button buttonConvert;
 };
 
 ConvertFile::ConvertFile(std::string filePath) : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
@@ -41,7 +40,7 @@ ConvertFile::ConvertFile(std::string filePath) : boxImg{Gtk::Orientation::ORIENT
 void ConvertFile::setHierarchy(std::string filePath)
 {
     int windowW = 1000;
-    int windowH = 500;
+    int windowH = 400;
 
     add(fixedWindow);
     fixedWindow.add(boxImg);
@@ -84,7 +83,6 @@ void ConvertFile::setHierarchy(std::string filePath)
 
     alignButtons.add(boxButtons);
     boxButtons.pack_start(buttonConvert, false, false, 0);
-    boxButtons.pack_start(buttonSave, false, false, 0);
 }
 
 void ConvertFile::setStyle()
@@ -104,7 +102,7 @@ void ConvertFile::setStyle()
     boxImg.set_visible(true);
     boxImg.set_can_focus(false);
 
-    boxConvert.set_visible(false);
+    boxConvert.set_visible(true);
     boxConvert.set_can_focus(false);
 
     alignButtons.set_size_request(0, 0);
@@ -122,19 +120,11 @@ void ConvertFile::setStyle()
     buttonConvert.set_size_request(100, 10);
     buttonConvert.set_border_width(2);
 
-    buttonSave.set_label("save");
-    buttonSave.set_visible(true);
-    buttonSave.set_can_focus(false);
-    buttonSave.set_focus_on_click(true);
-    buttonSave.set_size_request(100, 10);
-    buttonSave.set_border_width(2);
-    buttonSave.set_sensitive(false);
 }
 
 void ConvertFile::setBehaviour()
 {
     buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &ConvertFile::buttonConvert_clicked));
-    buttonSave.signal_clicked().connect(sigc::mem_fun(*this, &ConvertFile::buttonSave_clicked));
 }
 
 void ConvertFile::on_button_quit()
@@ -144,7 +134,6 @@ void ConvertFile::on_button_quit()
 
 void ConvertFile::buttonConvert_clicked()
 {
-    buttonSave.set_sensitive(true);
     buttonConvert.set_sensitive(false);
 
     // Load the image
@@ -198,49 +187,4 @@ void ConvertFile::buttonConvert_clicked()
     boxConvert.set_visible(true);
 
     fixedWindow.show_all();
-}
-
-void ConvertFile::buttonSave_clicked()
-{
-    buttonConvert.set_sensitive(false);
-    buttonSave.set_sensitive(false);
-
-        Gtk::FileChooserDialog dialog("Save Image", Gtk::FILE_CHOOSER_ACTION_SAVE);
-    dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-    dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-    // Set the default file name and filter
-    dialog.set_current_name("image.png");
-    dialog.set_filter(Gtk::FileFilter::create());
-    dialog.get_filter()->set_name("PNG Images");
-    dialog.get_filter()->add_mime_type("image/png");
-
-    // Show the dialog and wait for a response
-    int result = dialog.run();
-
-    // If the user selects a file and clicks the "Save" button
-    if (result == Gtk::RESPONSE_OK) {
-      // Get the selected file path
-      std::string filename = dialog.get_filename();
-
-      // Load the image from a file
-      std::string imagePath = "image.jpg";
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(imagePath);
-
-      // Scale the image to a desired size while preserving aspect ratio
-      int desiredWidth = 800;
-      int desiredHeight = 600;
-      double aspectRatio = (double)pixbuf->get_width() / (double)pixbuf->get_height();
-      if (aspectRatio > 1.0) {
-        // Landscape image
-        desiredHeight = (int)((double)desiredWidth / aspectRatio);
-      } else {
-        // Portrait image
-        desiredWidth = (int)((double)desiredHeight * aspectRatio);
-      }
-      pixbuf = pixbuf->scale_simple(desiredWidth, desiredHeight, Gdk::INTERP_BILINEAR);
-
-      // Save the scaled image to the selected file
-      pixbuf->save(filename, "png");
-    }
 }
