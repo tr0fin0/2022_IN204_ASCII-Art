@@ -37,6 +37,8 @@ sudo apt install -y make
 
 sudo apt-get install dbus-x11
 sudo apt-get install --reinstall dconf-gsettings-backend dconf-service
+
+sudo apt-get install libuchardet-dev
 ```
 
 #### Download Sources
