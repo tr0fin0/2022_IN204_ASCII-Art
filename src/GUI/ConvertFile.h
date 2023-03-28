@@ -48,8 +48,8 @@ void ConvertFile::setHierarchy(std::string filePath)
     fixedWindow.add(boxConvert);
     fixedWindow.add(alignButtons);
     fixedWindow.move(boxImg, 0, 0);
-    fixedWindow.move(boxConvert, 552, 0);
-    fixedWindow.move(alignButtons, 448, 224);
+    fixedWindow.move(boxConvert, 600, 0);
+    fixedWindow.move(alignButtons, 440, 160);
 
     const char *pathConst = filePath.c_str();
     image = Glib::wrap(gtk_image_new_from_file(pathConst), false);
@@ -77,8 +77,10 @@ void ConvertFile::setHierarchy(std::string filePath)
     Gtk::Image *image = Gtk::manage(new Gtk::Image(pixbuf));
     boxImg.add(*image);
 
-    // int imageW = image->get_allocated_width();
-    // int imageH = image->get_allocated_height();
+    int imageW = pixbuf->get_width();
+    int imageH = pixbuf->get_height();
+    // fixedWindow.move(boxImg, 0,10);
+    fixedWindow.move(boxImg, (400 - imageW) / 2, (400 - imageH) / 2);
 
     alignButtons.add(boxButtons);
     boxButtons.pack_start(buttonConvert, false, false, 0);
@@ -145,16 +147,24 @@ void ConvertFile::buttonConvert_clicked()
     buttonSave.set_sensitive(true);
     buttonConvert.set_sensitive(false);
 
+    // Load the image
+    // const char *pathConst = this->filePath.c_str();
+    Glib::RefPtr<Gdk::Pixbuf> pixbufOriginal = Gdk::Pixbuf::create_from_file(this->filePath.c_str());
+
+    // Get the original width and height of the image
+    int originalW = pixbufOriginal->get_width();
+    int originalH = pixbufOriginal->get_height();
+
     ImageConverter imageConverter(this->filePath);
 
     std::string newFileLocation = generateNewFileLocation(this->filePath);
 
     imageConverter.convertGrayScale();
-    imageConverter.resize(100, 100);
+    imageConverter.resize(originalW / 4, originalH / 4);
 
     std::string ASCII_ART = imageConverter.getStringASCII();
 
-    saveASCIIArtAsImage(ASCII_ART, 100, 100, 500, 500, newFileLocation);
+    saveASCIIArtAsImage(ASCII_ART, originalW / 4, originalH / 4, originalW, originalH, newFileLocation);
 
     const char *pathConst = newFileLocation.c_str();
     imageConvert = Glib::wrap(gtk_image_new_from_file(pathConst), false);
@@ -180,7 +190,11 @@ void ConvertFile::buttonConvert_clicked()
 
     // Create a new Gtk::Image from the scaled image
     Gtk::Image *imageConvert = Gtk::manage(new Gtk::Image(pixbuf));
+    int imageW = pixbuf->get_width();
+    int imageH = pixbuf->get_height();
+
     boxConvert.add(*imageConvert);
+    fixedWindow.move(boxConvert, 600 + (400 - imageW) / 2, (400 - imageH) / 2);
     boxConvert.set_visible(true);
 
     fixedWindow.show_all();
