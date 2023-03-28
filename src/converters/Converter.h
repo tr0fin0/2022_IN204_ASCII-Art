@@ -111,11 +111,11 @@ std::unique_ptr<char[]> Converter::naiveConvert(cv::Mat img, int grayscaleType =
             }
             else{
                 if(grayscaleType){
-                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                int index  = (shorterGrayScaleASCII.size()-1)*((int)img.at<uchar>(i,j) - minValue)/maxValue;
                 textResult[(img.cols*i) + j] = shorterGrayScaleASCII[index];
                 }
                 else{
-                    int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                    int index  = (standardGrayScaleASCII.size()-1)*((int)img.at<uchar>(i,j) - minValue)/maxValue;
                     textResult[(img.cols*i) + j] = standardGrayScaleASCII[index];
                 }
             }
@@ -143,9 +143,10 @@ void Converter::resize(cv::Mat img, int x, int y){
 }
 
 void Converter::convertSlice(cv::Mat img, char *textResult, int grayScaleType, int from_x,  int to_x){
-    const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'.";
-    const std::string shorterGrayScaleASCII =  ".:-=+*#%@";
-
+    const std::string standardGrayScaleASCII = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
+    const std::string shorterGrayScaleASCII =  " .:-=+*#%@";
+    const int standardSize = standardGrayScaleASCII.size();
+    const int shorterSize = shorterGrayScaleASCII.size();
     //getting the max and min pixel values of a image
     double maxValue, minValue;
     cv::minMaxLoc(img, &minValue, &maxValue);
@@ -158,11 +159,11 @@ void Converter::convertSlice(cv::Mat img, char *textResult, int grayScaleType, i
             }
             else{
                 if(grayScaleType){
-                int index  = shorterGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                int index  = (shorterSize-1)*((int)img.at<uchar>(i,j) - minValue)/maxValue;
                 textResult[(img.cols*i) + j] = shorterGrayScaleASCII[index];
                 }
                 else{
-                    int index  = standardGrayScaleASCII.size()*((int)img.at<uchar>(i,j) - minValue)/maxValue;
+                    int index  = (standardSize-1)*((int)img.at<uchar>(i,j) - minValue)/maxValue;
                     textResult[(img.cols*i) + j] = standardGrayScaleASCII[index];
                 }
             }
@@ -214,7 +215,9 @@ void Converter:: print_ASCII(){
 }
 
 std::string Converter::getStringASCII(){
-    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 3);
+    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 1);
+
+    //std::string ASCIIString(textResult.get());
 
     std::string ASCIIString;
 
@@ -225,8 +228,6 @@ std::string Converter::getStringASCII(){
             ASCIIString.push_back(textResult[(img.cols*i) + j]);
         }
     }
-
-    
 
     return ASCIIString;
 
