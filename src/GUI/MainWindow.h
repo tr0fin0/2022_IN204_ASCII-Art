@@ -6,6 +6,7 @@
 #include "../networkConnection/server.h"
 #include "WebConference.h"
 #include "ConvertFile.h"
+#include "Webcam.h"
 
 class MainWindow : public Gtk::Window
 {
@@ -205,6 +206,20 @@ void MainWindow::buttonConvert_clicked()
 
 void MainWindow::buttonWebcam_clicked()
 {
+  // close all open windows except this one
+  auto windows = Gtk::Window::list_toplevels();
+  for (auto window : windows)
+  {
+    if (window != this)
+    {
+      window->close();
+    }
+  }
+
+  Webcam *m_new_window = new Webcam();
+
+  // Show the new window
+  m_new_window->show_all();
 }
 
 void MainWindow::buttonWebconference_clicked()
