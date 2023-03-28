@@ -169,6 +169,8 @@ void MainWindow::buttonIP_clicked()
 
 void MainWindow::buttonConvert_clicked()
 {
+  buttonIP.set_label("get IP");
+
   // Get the number of open windows
   Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
   dialog.set_current_folder(pathRel2Abs("images"));
@@ -215,6 +217,8 @@ void MainWindow::buttonConvert_clicked()
 
 void MainWindow::buttonWebcam_clicked()
 {
+  buttonIP.set_label("get IP");
+
   // close all open windows except this one
   auto windows = Gtk::Window::list_toplevels();
   for (auto window : windows)
@@ -233,6 +237,8 @@ void MainWindow::buttonWebcam_clicked()
 
 void MainWindow::buttonWebconference_clicked()
 {
+  buttonIP.set_label("get IP");
+
   // close all open windows except this one
   auto windows = Gtk::Window::list_toplevels();
   for (auto window : windows)
