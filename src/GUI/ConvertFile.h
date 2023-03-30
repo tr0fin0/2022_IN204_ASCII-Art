@@ -150,8 +150,11 @@ void ConvertFile::buttonConvert_clicked()
 
     imageConverter.convertGrayScale();
     imageConverter.resize(originalW / 4, originalH / 4);
-
+    
+    imageConverter.resize(100, 150);
     std::string ASCII_ART = imageConverter.getStringASCII();
+
+    std::cout << ASCII_ART;
 
     saveASCIIArtAsImage(ASCII_ART, originalW / 4, originalH / 4, originalW, originalH, newFileLocation);
 

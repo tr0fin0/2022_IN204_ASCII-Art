@@ -83,45 +83,32 @@ void run(){
     std::cout <<"                                                               aa,    ,88  \n";
     std::cout <<"                                                                \"Y8bbdP\"   \n";
     std::cout <<"___________________________________________________________________________\n" << "\x1b[0m";
-}   
-
-std::string compress_string(const std::string& str) {
-    // Definir o nível de compressão
-    int level = Z_BEST_COMPRESSION;
-
-    // Configurar o buffer de saída
-    uLong compressed_size = compressBound(str.size());
-
-    std::string compressed(compressed_size, 0);
-
-    // Comprimir a string
-    int result = compress((Bytef*)compressed.data(), &compressed_size, (const Bytef*)str.data(), str.size());
-
-    // Verificar se houve erros
-    if (result != Z_OK) {
-        return "";
-    }
-
-    // Redimensionar o buffer de saída para o tamanho real da string comprimida
-    compressed.resize(compressed_size);
-    return compressed;
 }
 
-std::string decompress_string(const std::string& compressed_str) {
-    // Configurar o buffer de saída
-    uLong uncompressed_size = compressed_str.size() * 2;
-    std::string uncompressed(uncompressed_size, 0);
 
-    // Descomprimir a string
-    int result = uncompress((Bytef*)uncompressed.data(), &uncompressed_size, (const Bytef*)compressed_str.data(), compressed_str.size());
-
-    // Verificar se houve erros
-    if (result != Z_OK) {
-        return "";
-    }
-
-    // Redimensionar o buffer de saída para o tamanho real da string descomprimida
-    uncompressed.resize(uncompressed_size);
-
-    return uncompressed;
-}
+std::string getWaiting(){
+    return 
+"\n\n\n\n\n\n\n\n\n\n\n\n\n"
+"           __    __   ____  ____  ______  ____  ____    ____         \n"
+"          |  |__|  | /    ||    ||      ||    ||    \\  /    |        \n"
+"          |  |  |  ||  o  | |  | |      | |  | |  _  ||   __|         \n"
+"          |  |  |  ||     | |  | |_|  |_| |  | |  |  ||  |  |         \n"
+"          |  `  '  ||  _  | |  |   |  |   |  | |  |  ||  |_ |         \n"
+"           \\      / |  |  | |  |   |  |   |  | |  |  ||     |        \n"
+"            \\_/\\_/  |__|__||____|  |__|  |____||__|__||___,_|       \n"
+"                                                                      \n"
+"             _____   ___   ____       ______  __ __    ___            \n"
+"            |     | /   \\ |    \\     |      ||  |  |  /  _]        \n"
+"            |   __||     ||  D  )    |      ||  |  | /  [_        \n"
+"            |  |_  |  O  ||    /     |_|  |_||  _  ||    _]       \n"
+"            |   _] |     ||    \\       |  |  |  |  ||   [_        \n"
+"            |  |   |     ||  .  \\      |  |  |  |  ||     |       \n"
+"            |__|    \\___/ |__|\\_|      |__|  |__|__||_____|       \n"
+"                                                                        \n"
+"                      ____  __ __    ___   _____ ______                 \n"
+"                     /    ||  |  |  /  _] / ___/|      |                \n"
+"                    |   __||  |  | /  [_ (   \\_ |      |              \n"
+"                    |  |  ||  |  ||    _] \\__  ||_|  |_|              \n"
+"                    |  |_ ||  :  ||   [_  /  \\ |  |  |                \n"
+"                    |     ||     ||     | \\    |  |  |                \n"
+"                    |___,_| \\__,_||_____|  \\___|  |__|                \n";}

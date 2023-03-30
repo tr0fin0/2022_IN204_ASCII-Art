@@ -31,6 +31,10 @@ public:
         m_buffer = m_textview->get_buffer();
 
         m_buffer->set_property("monospace", true);
+        
+        std::string asciiWaiting = getWaiting();
+
+        m_buffer->set_text(asciiWaiting);
 
         m_textview->override_font(Pango::FontDescription("Monospace 12"));
         m_textview->set_justification(Gtk::JUSTIFY_CENTER);
