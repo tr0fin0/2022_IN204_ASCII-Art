@@ -32,7 +32,11 @@ public:
 
         m_buffer->set_property("monospace", true);
         
-        std::string asciiWaiting = getWaiting();
+        std::string asciiWaiting;
+        if(server_or_client == 1)
+            asciiWaiting = getWaiting();
+        else
+            asciiWaiting = getEntering();
 
         m_buffer->set_text(asciiWaiting);
 
