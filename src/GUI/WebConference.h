@@ -11,13 +11,6 @@
 #include <string>
 #include <cstring>
 
-#include <stdlib.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include <SFML/Network.hpp>
-
 using namespace std;
 
 sf::IpAddress server_sender;

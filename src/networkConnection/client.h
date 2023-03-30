@@ -6,6 +6,19 @@
 #include <string.h>
 #include <SFML/Network.hpp>
 
+#include <gtkmm.h>
+#include <glibmm/dispatcher.h>
+#include <thread>
+
+#include <uchardet/uchardet.h>
+
+#include <glib.h>
+#include <iconv.h>
+#include <iostream>
+#include <string>
+#include <cstring>
+
+
 #include "../converters/VideoConverter.h"
 
 using namespace std;
