@@ -9,9 +9,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-// #include "../converters/VideoConverter.h"
-// #include "../converters/ImageConverter.h"
-// #include "../converters/Converter.h"
+
 
 class Webcam : public Gtk::Window
 {
