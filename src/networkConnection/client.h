@@ -66,9 +66,8 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text,
         return;
     }
     std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
-    int i = 1;
+
     while(1){
-        i = i * -1;
         // UDP socket:
         if (socket.receive(buffer, sizeof(buffer), received, server_sender_for_client, server_sender_port) != sf::Socket::Done)
         {
@@ -118,7 +117,7 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text,
             std::string utf8_str(out_buf);
             delete[] out_buf;
 
-            m_ascii_text = &utf8_str;
+            *m_ascii_text = utf8_str;
             m_dispatcher->emit();
         }
     

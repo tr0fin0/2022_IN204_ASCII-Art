@@ -108,10 +108,8 @@ public:
 
     ~Webcam()
     {
-        if (m_thread.joinable())
-        {
-            m_thread.join();
-        }
+        
+        m_thread.join();
     }
 
 private:
@@ -121,12 +119,13 @@ private:
     Glib::Dispatcher m_dispatcher;
     std::thread m_thread;
 
-    // std::string get_new_text();
     void on_button_quit();
 };
 
 void Webcam::on_button_quit()
-{
+{   
+
+    m_thread.join();
     close();
 }
 

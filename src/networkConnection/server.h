@@ -108,7 +108,7 @@ void receiveFromClient(std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher
             std::string utf8_str(out_buf);
             delete[] out_buf;
 
-            m_ascii_text = &utf8_str;
+            *m_ascii_text = utf8_str;
             m_dispatcher->emit();
         }
         
