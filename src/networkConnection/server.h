@@ -35,7 +35,7 @@ void sendToClient(){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 1).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
         {
             std::cout << "Error in sending to client" << std::endl;
         }        
