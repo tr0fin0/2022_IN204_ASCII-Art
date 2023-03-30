@@ -60,7 +60,6 @@ public:
             m_buffer->set_text(m_ascii_text);
         });
 
-
         if(server_or_client == 1){
             t2 = std::thread(receiveFromClient);
             t1 = std::thread(sendToClient);
@@ -109,122 +108,7 @@ void WebConference::on_button_quit()
     t2.join();
     close();
 }
-/*
-void sendToServer(const char* server_IP_address){
-    sf::UdpSocket socket;
-    // UDP socket:
-    sf::IpAddress recipient(server_IP_address);
-    std::cout<<"Trying to connect to " << recipient.toString()<<"\n";;
-    unsigned short server_receive_port = 54000;
-    
-    //camera capture
-    cv::VideoCapture cap(0);
-    cv::Mat img;
 
-     while(1){
-        //captando a imagem
-        Converter c;
-        cap.read(img);
-        c.setImage(img);
-        c.convertGrayScale();
-        c.resize(50, 50);
-
-        //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
-        {
-            std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
-        }        
-    }
-
-}
-
-void receiveFromServer(const char* server_IP_address){
-    char buffer[2500];
-    std::size_t received;
-    unsigned short server_sender_port;
-
-    sf::UdpSocket socket;
-    if (socket.bind(54001) != sf::Socket::Done)
-    {
-        printf("Error bro\n");
-        return;
-    }
-    std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
-    int i = 1;
-    while(1){
-        i = i * -1;
-        // UDP socket:
-        if (socket.receive(buffer, sizeof(buffer), received, server_sender, server_sender_port) != sf::Socket::Done)
-        {
-            std::cout<<"Error in rcv" << std::endl;
-        }
-        if(received == sizeof(buffer)){
-        }
-    
-    }
-}
-
-void sendToClient(){
-    sf::UdpSocket socket;
-
-    while (client_sender.toString() == "0.0.0.0")
-    {
-    }
-    // UDP socket:    
-    sf::IpAddress recipient(client_sender.toString());
-    unsigned short client_receive_port = 54001;
-    
-    std::cout<<"Connectiong to " << recipient.toString();
-    
-    //camera capture
-    cv::VideoCapture cap(0);
-    cv::Mat img;
-
-     while(1){
-        //captando a imagem
-        Converter c;
-        cap.read(img);
-        c.setImage(img);
-        c.convertGrayScale();
-        c.resize(50, 50);
-
-        //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
-        {
-            std::cout << "Error in sending to client" << std::endl;
-        }        
-    }
-
-}
-
-void receiveFromClient(){
-    char buffer[2500];
-    std::size_t received = 0;
-    unsigned short client_sender_port;
-
-    sf::UdpSocket socket;
-    
-    if (socket.bind(54000) != sf::Socket::Done)
-    {
-        // error...
-        printf("Error bro\n");
-        return;
-    }
-    std::cout << "Bind sucessfull in " << socket.getLocalPort() << " "<< std::endl;
-
-    while(1){
-        // UDP socket:
-        if (socket.receive(buffer, sizeof(buffer), received, client_sender, client_sender_port) != sf::Socket::Done)
-        {
-            std::cout<<"Error in rcv" << std::endl;
-        }
-        if(received == sizeof(buffer)){
-        }
-        
-    }
-}
-
-*/
 void WebConference::convertAndDispatch(std::string str){
 
     uchardet_t ud = uchardet_new();
