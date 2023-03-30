@@ -38,10 +38,12 @@ public:
         set_visible(true);
         set_can_focus(false);
         set_resizable(false);
-
+        
         m_dispatcher.connect([this]()                             { 
             m_buffer->set_text(m_ascii_text); 
         });
+
+        isRunning = true;
 
         m_thread = std::thread([this]()
         {
@@ -49,7 +51,7 @@ public:
             Converter c;
             cv::VideoCapture cap(0);
 
-            while (true)
+            while (this->isRunning)
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(41));
                 
@@ -98,17 +100,21 @@ public:
                 std::string utf8_str(out_buf);
                 delete[] out_buf;
 
-                m_ascii_text = utf8_str;
-                m_dispatcher.emit();
+                if(this->isRunning){
+                    m_ascii_text = utf8_str;
+                    m_dispatcher.emit();
+                }
             }
-            // cap.release(); // TODO kill camera input after closing window
+            cap.release(); // TODO kill camera input after closing window
         });
         show_all_children();
     }
 
     ~Webcam()
     {
-        
+
+    std::cout << "killing webcam\n";
+        this->isRunning = false;
         m_thread.join();
     }
 
@@ -118,13 +124,15 @@ private:
     std::string m_ascii_text;
     Glib::Dispatcher m_dispatcher;
     std::thread m_thread;
+    bool isRunning;
 
     void on_button_quit();
 };
 
 void Webcam::on_button_quit()
 {   
-
+    std::cout << "quitting\n";
+    this->isRunning = false;
     m_thread.join();
     close();
 }

@@ -215,7 +215,7 @@ void Converter:: print_ASCII(){
 }
 
 std::string Converter::getStringASCII(){
-    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 1);
+    std::unique_ptr<char[]> textResult = parallelConvert(img, 1, 3);
 
     //std::string ASCIIString(textResult.get());
 
