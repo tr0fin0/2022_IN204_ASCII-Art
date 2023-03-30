@@ -298,8 +298,8 @@ void MainWindow::buttonBeServer_clicked(){
       window->close();
     }
   }
-
-  WebConference *m_new_window = new WebConference(1, "");
+  
+  WebConference *m_new_window = new WebConference(1);
 
   // Show the new window
 }
@@ -317,6 +317,7 @@ void MainWindow::buttonBeClient_clicked(){
     }
   }
 
-  WebConference *m_new_window = new WebConference(2, "147.250.227.235");  
+  char serverIP[16] = "147.250.227.235";
+  WebConference *m_new_window = new WebConference(2, serverIP);  
 }
 

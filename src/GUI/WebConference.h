@@ -17,7 +17,7 @@ public:
     //WebConference constructor
     //server -> server_or_client == 1 | otherwise -> client
     //if client, 
-    WebConference(int server_or_client, char* server_IP_address)
+    WebConference(int server_or_client, char* server_IP_address = NULL)
     {
         this->server_or_client = server_or_client;
         this->server_IP_address = server_IP_address;
