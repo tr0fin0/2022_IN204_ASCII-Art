@@ -8,16 +8,16 @@
 using namespace std;
 
 
-sf::IpAddress client_sender;
+sf::IpAddress client_sender_for_server;
 
 void sendToClient(){
     sf::UdpSocket socket;
 
-    while (client_sender.toString() == "0.0.0.0")
+    while (client_sender_for_server.toString() == "0.0.0.0")
     {
     }
     // UDP socket:    
-    sf::IpAddress recipient(client_sender.toString());
+    sf::IpAddress recipient(client_sender_for_server.toString());
     unsigned short client_receive_port = 54001;
     
     std::cout<<"Connectiong to " << recipient.toString();
@@ -60,7 +60,7 @@ void receiveFromClient(){
 
     while(1){
         // UDP socket:
-        if (socket.receive(buffer, sizeof(buffer), received, client_sender, client_sender_port) != sf::Socket::Done)
+        if (socket.receive(buffer, sizeof(buffer), received, client_sender_for_server, client_sender_port) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
         }

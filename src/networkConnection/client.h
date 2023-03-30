@@ -11,7 +11,7 @@
 using namespace std;
 
 //tentando com threads
-sf::IpAddress server_sender;
+sf::IpAddress server_sender_for_client;
 
 void sendToServer(const char *server_IP_address){
     sf::UdpSocket socket;
@@ -57,7 +57,7 @@ void receiveFromServer(const char* server_IP_address){
     while(1){
         i = i * -1;
         // UDP socket:
-        if (socket.receive(buffer, sizeof(buffer), received, server_sender, server_sender_port) != sf::Socket::Done)
+        if (socket.receive(buffer, sizeof(buffer), received, server_sender_for_client, server_sender_port) != sf::Socket::Done)
         {
             std::cout<<"Error in rcv" << std::endl;
         }

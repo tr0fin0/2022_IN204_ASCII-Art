@@ -26,6 +26,9 @@ private:
   void buttonWebcam_clicked();
   void buttonWebconference_clicked();
 
+  void buttonBeServer_clicked();
+  void buttonBeClient_clicked();
+  
   // widgets declaration
   Gtk::Fixed fixedWindow;
   Gtk::Box boxImg, boxReturn, boxButtons;
@@ -33,6 +36,9 @@ private:
   Gtk::Style *style;
   Gtk::Widget *image;
   Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonIP;
+
+
+  Gtk::Button buttonBeServer, buttonBeClient;
 };
 
 MainWindow::MainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
@@ -74,6 +80,9 @@ void MainWindow::setHierarchy()
   boxButtons.pack_start(buttonConvert, false, false, 0);
   boxButtons.pack_start(buttonWebcam, false, false, 0);
   boxButtons.pack_start(buttonWebconference, false, false, 0);
+  
+  boxButtons.pack_start(buttonBeServer, false, false, 0);
+  boxButtons.pack_start(buttonBeClient, false, false, 0);  
 }
 
 void MainWindow::setStyle()
@@ -142,6 +151,20 @@ void MainWindow::setStyle()
   buttonWebconference.set_focus_on_click(true);
   buttonWebconference.set_size_request(buttonsW, buttonsH);
   buttonWebconference.set_border_width(buttonsB);
+
+  buttonBeServer.set_label("Host a meeting");
+  buttonBeServer.set_visible(true);
+  buttonBeServer.set_can_focus(false);
+  buttonBeServer.set_focus_on_click(true);
+  buttonBeServer.set_size_request(buttonsW, buttonsH);
+  buttonBeServer.set_border_width(buttonsB);
+  
+  buttonBeClient.set_label("Enter a meeting");
+  buttonBeClient.set_visible(true);
+  buttonBeClient.set_can_focus(false);
+  buttonBeClient.set_focus_on_click(true);
+  buttonBeClient.set_size_request(buttonsW, buttonsH);
+  buttonBeClient.set_border_width(buttonsB);
 }
 
 void MainWindow::setBehaviour()
@@ -150,6 +173,9 @@ void MainWindow::setBehaviour()
   buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConvert_clicked));
   buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
   buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
+
+  buttonBeServer.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonBeServer_clicked));
+  buttonBeClient.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonBeClient_clicked));
 }
 
 MainWindow::~MainWindow()
@@ -164,6 +190,11 @@ void MainWindow::on_button_quit()
 void MainWindow::buttonIP_clicked()
 {
   buttonIP.set_label(getHostname());
+  // Instânce of clipboard
+  auto clipboard = Gtk::Clipboard::get();
+
+  // Set IP string in clipboard (ctrl+c - ctrl+v)
+  clipboard->set_text(getHostname());
 }
 
 
@@ -237,6 +268,25 @@ void MainWindow::buttonWebcam_clicked()
 
 void MainWindow::buttonWebconference_clicked()
 {
+  // buttonIP.set_label("get IP");
+
+  // // close all open windows except this one
+  // auto windows = Gtk::Window::list_toplevels();
+  // for (auto window : windows)
+  // {
+  //   if (window != this)
+  //   {
+  //     window->close();
+  //   }
+  // }
+
+  // WebConference *m_new_window = new WebConference();
+
+  // // Show the new window
+  // m_new_window->show_all();
+}
+
+void MainWindow::buttonBeServer_clicked(){
   buttonIP.set_label("get IP");
 
   // close all open windows except this one
@@ -249,8 +299,24 @@ void MainWindow::buttonWebconference_clicked()
     }
   }
 
-  WebConference *m_new_window = new WebConference();
+  WebConference *m_new_window = new WebConference(1, "");
 
   // Show the new window
-  m_new_window->show_all();
 }
+
+void MainWindow::buttonBeClient_clicked(){
+    buttonIP.set_label("get IP");
+
+  // close all open windows except this one
+  auto windows = Gtk::Window::list_toplevels();
+  for (auto window : windows)
+  {
+    if (window != this)
+    {
+      window->close();
+    }
+  }
+
+  WebConference *m_new_window = new WebConference(2, "147.250.227.185");  
+}
+

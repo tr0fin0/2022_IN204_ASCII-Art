@@ -15,7 +15,7 @@ int main(){
 
     // Shows the window and returns when it is closed.
     // return app->run(Window);
-    
+    /*
     int choice = 0;
     while(choice != 1 && choice != 2 && choice != 3){    
         std::cout << "(1)Server | (2) Client: ";
@@ -31,6 +31,9 @@ int main(){
     else{
         system("hostname -I");
         be_server();
-}
+    }
+    */
+
+
     return 0;
 }
