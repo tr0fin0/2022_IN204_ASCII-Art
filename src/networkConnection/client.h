@@ -54,7 +54,7 @@ void sendToServer(const char *server_IP_address){
 
 }
 
-void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text){
+void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher){
     char buffer[2500];
     std::size_t received;
     unsigned short server_sender_port;
@@ -75,8 +75,8 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text)
             std::cout<<"Error in rcv" << std::endl;
         }
         if(received == sizeof(buffer)){
-            system("clear");
-            std::cout<<buffer;
+            //system("clear");
+            //std::cout<<buffer;
 
             //CONVERTING TO UTF-8
             std::string str(buffer);
@@ -118,18 +118,9 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text)
             std::string utf8_str(out_buf);
             delete[] out_buf;
 
+            m_ascii_text = &utf8_str;
+            m_dispatcher->emit();
         }
     
     }
-}
-
-
-void be_client(const char* server_IP_address, std::string m_ascii_text){
-
-    std::thread t1 = std::thread(sendToServer, server_IP_address);
-
-    std::thread t2 = std::thread(receiveFromServer, server_IP_address, &m_ascii_text);
-
-    t1.join();
-    t2.join();
 }
