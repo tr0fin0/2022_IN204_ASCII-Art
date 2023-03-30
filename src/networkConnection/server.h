@@ -35,7 +35,7 @@ void sendToClient(){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 1).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
         {
             std::cout << "Error in sending to client" << std::endl;
         }        
@@ -43,7 +43,7 @@ void sendToClient(){
 
 }
 
-void receiveFromClient(){
+void receiveFromClient(std::string *m_ascii_text){
     char buffer[2500];
     std::size_t received = 0;
     unsigned short client_sender_port;
@@ -116,9 +116,9 @@ void receiveFromClient(){
 
 }
 
-void be_server(){
+void be_server(std::string m_ascii_text){
     
-    std::thread t2 = std::thread(receiveFromClient);
+    std::thread t2 = std::thread(receiveFromClient, &m_ascii_text);
 
     std::thread t1 = std::thread(sendToClient);
 

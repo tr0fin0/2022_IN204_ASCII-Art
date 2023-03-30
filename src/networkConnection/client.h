@@ -46,15 +46,15 @@ void sendToServer(const char *server_IP_address){
         c.resize(50, 50);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 1).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
         {
-        std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
+            std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
         }        
     }
 
 }
 
-void receiveFromServer(const char* server_IP_address){
+void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text){
     char buffer[2500];
     std::size_t received;
     unsigned short server_sender_port;
@@ -78,7 +78,7 @@ void receiveFromServer(const char* server_IP_address){
             system("clear");
             std::cout<<buffer;
 
-                        //CONVERTING TO UTF-8
+            //CONVERTING TO UTF-8
             std::string str(buffer);
 
             uchardet_t ud = uchardet_new();
@@ -124,11 +124,11 @@ void receiveFromServer(const char* server_IP_address){
 }
 
 
-void be_client(const char* server_IP_address){
+void be_client(const char* server_IP_address, std::string m_ascii_text){
 
     std::thread t1 = std::thread(sendToServer, server_IP_address);
 
-    std::thread t2 = std::thread(receiveFromServer, server_IP_address);
+    std::thread t2 = std::thread(receiveFromServer, server_IP_address, &m_ascii_text);
 
     t1.join();
     t2.join();

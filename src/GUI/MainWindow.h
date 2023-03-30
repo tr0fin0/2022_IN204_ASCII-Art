@@ -317,6 +317,6 @@ void MainWindow::buttonBeClient_clicked(){
     }
   }
 
-  WebConference *m_new_window = new WebConference(2, "147.250.225.52");  
+  WebConference *m_new_window = new WebConference(2, "147.250.227.235");  
 }
 

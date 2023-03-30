@@ -54,7 +54,7 @@ public:
         });
 
         if(server_or_client == 1){
-            t2 = std::thread(receiveFromClient);
+            t2 = std::thread(receiveFromClient, &m_ascii_text);
             t1 = std::thread(sendToClient);
             
             t1.join();
@@ -62,7 +62,7 @@ public:
 
         }else{
             std::thread t1 = std::thread(sendToServer, server_IP_address);
-            std::thread t2 = std::thread(receiveFromServer, server_IP_address);
+            std::thread t2 = std::thread(receiveFromServer, server_IP_address, &m_ascii_text);
 
             t1.join();
             t2.join();
