@@ -76,6 +76,8 @@ void receiveFromClient(std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher
         if(received == sizeof(buffer))
         {
             //converting to UTF-8
+            std::string str(buffer);
+
             *m_ascii_text = convert2UTF8(str);
             m_dispatcher->emit();
         }

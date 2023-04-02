@@ -74,9 +74,10 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text,
         {
             //std::cout<<"Error in rcv" << std::endl;
         }
-        if(received == sizeof(buffer))
-        {
+        if(received == sizeof(buffer)){
             //converting to UTF-8
+            std::string str(buffer);
+
             *m_ascii_text = convert2UTF8(str);
             m_dispatcher->emit();
         }
