@@ -37,7 +37,7 @@ std::string getHostname() {
     pclose(pipe);
     // Remove trailing newline character if it exists
     if (!result.empty() && result[result.length()-1] == '\n') {
-        result.erase(result.length()-1);
+        result.erase(result.length()-2);
     }
     return result;
 }
