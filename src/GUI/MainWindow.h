@@ -111,7 +111,6 @@ void MainWindow::setStyle()
   boxReturn.set_visible(true);
   boxReturn.set_can_focus(false);
 
-  // buttonIP.set_label(getHostname());
   buttonIP.set_label("get IP");
   buttonIP.set_visible(true);
   buttonIP.set_can_focus(false);
@@ -182,13 +181,12 @@ void MainWindow::on_button_quit()
 void MainWindow::buttonIP_clicked()
 {
   buttonIP.set_label(getHostname());
-  // Instânce of clipboard
+  // Instance of clipboard
   auto clipboard = Gtk::Clipboard::get();
 
-  // Set IP string in clipboard (ctrl+c - ctrl+v)
+  // set IP string in clipboard (ctrl+c - ctrl+v)
   clipboard->set_text(getHostname());
 }
-
 
 void MainWindow::buttonConvert_clicked()
 {
