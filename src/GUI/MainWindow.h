@@ -24,11 +24,9 @@ private:
   void buttonIP_clicked();
   void buttonConvert_clicked();
   void buttonWebcam_clicked();
-  void buttonWebconference_clicked();
 
-  void buttonBeServer_clicked();
-  void buttonBeClient_clicked();
-  
+  void buttonConnect_clicked();
+
   // widgets declaration
   Gtk::Fixed fixedWindow;
   Gtk::Box boxImg, boxReturn, boxButtons;
@@ -174,8 +172,7 @@ void MainWindow::setBehaviour()
   buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
   buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
 
-  buttonBeServer.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonBeServer_clicked));
-  buttonBeClient.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonBeClient_clicked));
+  buttonConnect.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConnect_clicked));
 }
 
 MainWindow::~MainWindow()
@@ -266,46 +263,15 @@ void MainWindow::buttonWebcam_clicked()
   m_new_window->show_all();
 }
 
-void MainWindow::buttonWebconference_clicked()
+void MainWindow::buttonConnect_clicked()
 {
-  // buttonIP.set_label("get IP");
+  std::string stringIP_machine = getHostname();
+  std::string stringIP_target  = entryAddressIP.get_text();
+  entryAddressIP.set_text("");
 
-  // // close all open windows except this one
-  // auto windows = Gtk::Window::list_toplevels();
-  // for (auto window : windows)
-  // {
-  //   if (window != this)
-  //   {
-  //     window->close();
-  //   }
-  // }
-
-  // WebConference *m_new_window = new WebConference();
-
-  // // Show the new window
-  // m_new_window->show_all();
-}
-
-void MainWindow::buttonBeServer_clicked(){
-  buttonIP.set_label("get IP");
-
-  // close all open windows except this one
-  auto windows = Gtk::Window::list_toplevels();
-  for (auto window : windows)
-  {
-    if (window != this)
-    {
-      window->close();
-    }
-  }
-  
-  WebConference *m_new_window = new WebConference(1);
-
-  // Show the new window
-}
-
-void MainWindow::buttonBeClient_clicked(){
-    buttonIP.set_label("get IP");
+  buttonIP.set_label(stringIP_machine);
+  char* IP_machine = const_cast<char*>(stringIP_machine.c_str());
+  char* IP_target  = const_cast<char*>(stringIP_target.c_str());
 
   // close all open windows except this one
   auto windows = Gtk::Window::list_toplevels();
@@ -317,7 +283,16 @@ void MainWindow::buttonBeClient_clicked(){
     }
   }
 
-  char serverIP[16] = "147.250.227.235";
-  WebConference *m_new_window = new WebConference(2, serverIP);  
-}
+  if (stringIP_target.empty() or (stringIP_target == stringIP_machine))
+  {
+    WebConference *m_new_window = new WebConference(1);
+  }
+  else if (isValidIpAddress(stringIP_target))
+  {
+    WebConference *m_new_window = new WebConference(2, IP_target);
+  }
+  else
+  {
 
+  }
+}
