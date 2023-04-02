@@ -93,6 +93,12 @@ void WebConference::on_button_quit()
         receiving = false;
         t2.join();
     }
+    if(isServer){
+        client_sender_for_server = "0.0.0.0";
+    }else{
+        server_sender_for_client = "0.0.0.0";
+    }
+
     close();
 }
 
