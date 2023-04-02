@@ -25,7 +25,7 @@ void sendToClient(bool *sending){
     sf::IpAddress recipient(client_sender_for_server.toString());
     unsigned short client_receive_port = 54001;
     
-    std::cout<<"Connectiong to " << recipient.toString() << std::endl;
+    // std::cout<<"Connectiong to " << recipient.toString() << std::endl;
     
     //camera capture
     cv::VideoCapture cap(0);
@@ -46,7 +46,7 @@ void sendToClient(bool *sending){
         }
     }
 
-    std::cout << "server sending saiu\n";
+    // std::cout << "server sending saiu\n";
 
 }
 
@@ -66,7 +66,7 @@ void receiveFromClient(std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher
         printf("error socket\n");
         return;
     }
-    std::cout << "Bind sucessfull in " << socket.getLocalPort() << " "<< std::endl;
+    // std::cout << "Bind sucessfull in " << socket.getLocalPort() << " "<< std::endl;
     while(*receiving){
         // UDP socket:
         if (socket.receive(buffer, sizeof(buffer), received, client_sender_for_server, client_sender_port) != sf::Socket::Done)
@@ -82,7 +82,6 @@ void receiveFromClient(std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher
             m_dispatcher->emit();
         }
     }
-
-    std::cout << "server receiving saiu\n"; 
+    // std::cout << "server receiving saiu\n"; 
 }
 
