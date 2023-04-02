@@ -29,19 +29,18 @@ private:
 
   // widgets declaration
   Gtk::Fixed fixedWindow;
-  Gtk::Box boxImg, boxReturn, boxButtons;
+  Gtk::Box boxImg, boxReturn, boxButtons, boxConference;
   Gtk::Alignment alignReturn, alignButtons;
   Gtk::Style *style;
   Gtk::Widget *image;
-  Gtk::Button buttonConvert, buttonWebcam, buttonWebconference, buttonIP;
-
-
-  Gtk::Button buttonBeServer, buttonBeClient;
+  Gtk::Entry entryAddressIP;
+  Gtk::Button buttonConvert, buttonWebcam, buttonIP, buttonConnect;
 };
 
 MainWindow::MainWindow() : boxImg{Gtk::Orientation::ORIENTATION_VERTICAL},
                            boxReturn{Gtk::Orientation::ORIENTATION_VERTICAL},
-                           boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL}
+                           boxButtons{Gtk::Orientation::ORIENTATION_VERTICAL},
+                           boxConference{Gtk::Orientation::ORIENTATION_HORIZONTAL}
 {
   setHierarchy();
   setStyle();
@@ -77,10 +76,11 @@ void MainWindow::setHierarchy()
   alignButtons.add(boxButtons);
   boxButtons.pack_start(buttonConvert, false, false, 0);
   boxButtons.pack_start(buttonWebcam, false, false, 0);
-  boxButtons.pack_start(buttonWebconference, false, false, 0);
-  
-  boxButtons.pack_start(buttonBeServer, false, false, 0);
-  boxButtons.pack_start(buttonBeClient, false, false, 0);  
+
+  // Buttons
+  boxConference.pack_start(entryAddressIP, false, false, 0);
+  boxConference.pack_start(buttonConnect, false, false, 0);
+  boxButtons.pack_start(boxConference, false, false, 0);
 }
 
 void MainWindow::setStyle()
@@ -143,26 +143,23 @@ void MainWindow::setStyle()
   buttonWebcam.set_size_request(buttonsW, buttonsH);
   buttonWebcam.set_border_width(buttonsB);
 
-  buttonWebconference.set_label("webconference");
-  buttonWebconference.set_visible(true);
-  buttonWebconference.set_can_focus(false);
-  buttonWebconference.set_focus_on_click(true);
-  buttonWebconference.set_size_request(buttonsW, buttonsH);
-  buttonWebconference.set_border_width(buttonsB);
+  // Conference
+  boxConference.set_visible(true);
+  boxConference.set_can_focus(false);
 
-  buttonBeServer.set_label("Host a meeting");
-  buttonBeServer.set_visible(true);
-  buttonBeServer.set_can_focus(false);
-  buttonBeServer.set_focus_on_click(true);
-  buttonBeServer.set_size_request(buttonsW, buttonsH);
-  buttonBeServer.set_border_width(buttonsB);
-  
-  buttonBeClient.set_label("Enter a meeting");
-  buttonBeClient.set_visible(true);
-  buttonBeClient.set_can_focus(false);
-  buttonBeClient.set_focus_on_click(true);
-  buttonBeClient.set_size_request(buttonsW, buttonsH);
-  buttonBeClient.set_border_width(buttonsB);
+  entryAddressIP.set_placeholder_text("enter IP address");
+  entryAddressIP.set_max_length(25);
+  entryAddressIP.set_visibility(true);
+  entryAddressIP.set_alignment(0.5); // 0.0 left, 1.0 right
+  entryAddressIP.set_editable(true);
+  entryAddressIP.set_size_request(entryW, buttonsH);
+
+  buttonConnect.set_label("connect"); // Enter a meeting
+  buttonConnect.set_visible(true);
+  buttonConnect.set_can_focus(false);
+  buttonConnect.set_focus_on_click(true);
+  buttonConnect.set_size_request(buttonConnectW, buttonsH);
+  buttonConnect.set_border_width(buttonsB);
 }
 
 void MainWindow::setBehaviour()
@@ -170,8 +167,6 @@ void MainWindow::setBehaviour()
   buttonIP.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonIP_clicked));
   buttonConvert.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConvert_clicked));
   buttonWebcam.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebcam_clicked));
-  buttonWebconference.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonWebconference_clicked));
-
   buttonConnect.signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::buttonConnect_clicked));
 }
 
