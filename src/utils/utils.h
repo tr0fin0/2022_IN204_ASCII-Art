@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
+#include <regex>
 
 
 // erase the last N characthers of string
@@ -40,4 +41,12 @@ std::string getHostname() {
         result.erase(result.length()-2);
     }
     return result;
+}
+
+bool isValidIpAddress(const std::string& ipAddress) {
+    // Define the regular expression pattern for the IP address
+    std::regex pattern("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$");
+
+    // Check if the input string matches the pattern
+    return std::regex_match(ipAddress, pattern);
 }
