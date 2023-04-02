@@ -16,34 +16,9 @@ class Webcam : public Gtk::Window
 public:
     Webcam()
     {
-        int windowW = 1000;
-        int windowH = 1000;
-
-        m_textview = Gtk::manage(new Gtk::TextView());
-        m_textview->set_editable(true);
-        m_textview->set_cursor_visible(false);
-        m_buffer = m_textview->get_buffer();
-
-        m_buffer->set_property("monospace", true);
-
-        m_textview->override_font(Pango::FontDescription("Monospace 12"));
-        m_textview->set_justification(Gtk::JUSTIFY_CENTER);
-
-        add(*m_textview);
-
-        set_title("ASCII Webcam");
-        set_default_size(windowW, windowH);
-        set_border_width(10);
-        set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
-        set_visible(true);
-        set_can_focus(false);
-        set_resizable(false);
-        
-        m_dispatcher.connect([this]()                             { 
-            m_buffer->set_text(m_ascii_text); 
-        });
-
-        isRunning = true;
+        setHierarchy();
+        setStyle();
+        setBehaviour();
 
         m_thread = std::thread([this]()
         {
@@ -59,7 +34,7 @@ public:
                 c.setImage(img);
                 c.convertGrayScale();
 
-                c.resize(50, 50);
+                c.resize(250, 100);
 
                 std::string str = c.getStringASCII();
 
@@ -105,20 +80,23 @@ public:
                     m_dispatcher.emit();
                 }
             }
-            cap.release(); // TODO kill camera input after closing window
+            
+            cap.release(); // kill camera input after closing window
         });
+
         show_all_children();
     }
-
-    ~Webcam()
-    {
-
-    std::cout << "killing webcam\n";
-        this->isRunning = false;
-        m_thread.join();
-    }
-
+    ~Webcam(){}
 private:
+    void setHierarchy();
+    void setStyle();
+    void setBehaviour();
+    
+    Gtk::Fixed fixedWindow;
+    Gtk::Button buttonQuit;
+    Gtk::Alignment alignButtonText;
+    Gtk::Box boxButtonText;
+
     Gtk::TextView *m_textview;
     Glib::RefPtr<Gtk::TextBuffer> m_buffer;
     std::string m_ascii_text;
@@ -129,9 +107,83 @@ private:
     void on_button_quit();
 };
 
+void Webcam::setHierarchy(){
+    // Window
+    add(fixedWindow);
+
+    // Fixed
+    fixedWindow.add(alignButtonText);
+        
+    //align
+    alignButtonText.add(boxButtonText);
+
+
+    m_textview = Gtk::manage(new Gtk::TextView());
+    m_textview->set_editable(true);
+    m_textview->set_size_request(1000, 800);
+    m_textview->set_cursor_visible(false);
+    m_buffer = m_textview->get_buffer();
+    m_textview->override_font(Pango::FontDescription("Monospace 5"));
+
+    //box
+    boxButtonText.set_orientation(Gtk::Orientation::ORIENTATION_VERTICAL);
+    boxButtonText.pack_start(*m_textview,  false, false, 0);
+    boxButtonText.pack_start(buttonQuit,  false, false, 0);
+}
+
+void Webcam::setStyle(){
+    int windowW = 1000;
+    int windowH = 900;
+
+    // Fixed
+    fixedWindow.set_size_request(windowW, windowH);
+    fixedWindow.set_visible(true);
+    fixedWindow.set_can_focus(false);
+
+    // boxButtonText
+    boxButtonText.set_visible(true);
+    boxButtonText.set_can_focus(false);
+
+    // buttonQuit
+    buttonQuit.set_label("Close WebCam");
+    buttonQuit.set_visible(true);
+    buttonQuit.set_can_focus(false);
+    buttonQuit.set_focus_on_click(true);
+    buttonQuit.set_size_request(10, 10);
+    buttonQuit.set_border_width(10);
+    buttonQuit.set_sensitive(true);
+
+    // AlignButtonText
+    //alignButtonText.set_size_request(-1, -1);
+    alignButtonText.set_visible(true);
+    alignButtonText.set_can_focus(false);
+    alignButtonText.set_border_width(0);
+
+    boxButtonText.set_visible(true);
+    boxButtonText.set_can_focus(false);
+    m_textview->set_justification(Gtk::JUSTIFY_CENTER);
+
+    set_title("ASCII Webcam");
+    set_border_width(10);
+    set_position(Gtk::WindowPosition::WIN_POS_CENTER_ALWAYS);
+    set_visible(true);
+    set_can_focus(false);
+    set_resizable(false);
+    set_deletable(false);
+
+    m_dispatcher.connect([this](){ 
+        m_buffer->set_text(m_ascii_text); 
+    });
+
+    isRunning = true;
+}
+
+void Webcam::setBehaviour(){
+    buttonQuit.signal_clicked().connect(sigc::mem_fun(*this, &Webcam::on_button_quit));
+}
+
 void Webcam::on_button_quit()
 {   
-    std::cout << "quitting\n";
     this->isRunning = false;
     m_thread.join();
     close();

@@ -26,7 +26,7 @@ using namespace std;
 //tentando com threads
 sf::IpAddress server_sender_for_client;
 
-void sendToServer(const char *server_IP_address){
+void sendToServer(const char *server_IP_address, bool *sending){
     sf::UdpSocket socket;
     // UDP socket:
     sf::IpAddress recipient(server_IP_address);
@@ -37,7 +37,7 @@ void sendToServer(const char *server_IP_address){
     cv::VideoCapture cap(0);
     cv::Mat img;
 
-     while(1){
+     while(*sending){
         //captando a imagem
         Converter c;
         cap.read(img);
@@ -51,15 +51,16 @@ void sendToServer(const char *server_IP_address){
             std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
         }        
     }
-
+    std::cout << "client sending saiu\n";
 }
 
-void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher){
+void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher, bool *receiving){
     char buffer[2500];
     std::size_t received;
     unsigned short server_sender_port;
 
     sf::UdpSocket socket;
+    socket.setBlocking(false);
     if (socket.bind(54001) != sf::Socket::Done)
     {
         printf("Error bro\n");
@@ -67,11 +68,12 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text,
     }
     std::cout<<"Binded to " << socket.getLocalPort()<<"\n";
 
-    while(1){
+    while(*receiving){
+        received = 0;
         // UDP socket:
         if (socket.receive(buffer, sizeof(buffer), received, server_sender_for_client, server_sender_port) != sf::Socket::Done)
         {
-            std::cout<<"Error in rcv" << std::endl;
+            //std::cout<<"Error in rcv" << std::endl;
         }
         if(received == sizeof(buffer)){
             //system("clear");
@@ -122,4 +124,6 @@ void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text,
         }
     
     }
+    std::cout << "client receiving saiu\n";
+
 }
