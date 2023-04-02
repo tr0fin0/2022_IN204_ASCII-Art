@@ -5,7 +5,8 @@
 #include <cstdio>
 #include <cstring>
 #include <regex>
-
+#include <locale>
+#include <codecvt>
 
 // erase the last N characthers of string
 std::string eraseLastN(std::string str, int n) {
@@ -49,4 +50,15 @@ bool isValidIpAddress(const std::string& ipAddress) {
 
     // Check if the input string matches the pattern
     return std::regex_match(ipAddress, pattern);
+}
+
+std::string convert2UTF8(std::string stringASCII)
+{
+    // Convert ASCII string to wide string
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wide_str = converter.from_bytes(stringASCII);
+    
+    // Convert wide string to UTF-8 string
+    std::string stringUTF8 = converter.to_bytes(wide_str);
+    return stringUTF8;
 }
