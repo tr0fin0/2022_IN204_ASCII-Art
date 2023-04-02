@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "client.h"
+// #include "../GUI/dimensions.h"
 using namespace std;
 
 
@@ -36,13 +37,13 @@ void sendToClient(bool *sending){
         cap.read(img);
         c.setImage(img);
         c.convertGrayScale();
-        c.resize(50, 50);
+        c.resize(imageWidth, imageHeight);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, client_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), bufferSize, recipient, client_receive_port) != sf::Socket::Done)
         {
             std::cout << "Error in sending to client" << std::endl;
-        }        
+        }
     }
 
     std::cout << "server sending saiu\n";
@@ -50,7 +51,7 @@ void sendToClient(bool *sending){
 }
 
 void receiveFromClient(std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher, bool *receiving){
-    char buffer[2500];
+    char buffer[bufferSize];
     std::size_t received = 0;
     unsigned short client_sender_port;
 

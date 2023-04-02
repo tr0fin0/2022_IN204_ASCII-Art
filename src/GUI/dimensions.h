@@ -1,6 +1,11 @@
 #include <string>
 
 
+int imageWidth = 250;
+int imageHeight= 100;
+int bufferSize = imageWidth * imageHeight;
+
+
 int imageW = 1000;
 int imageH = 380;
 

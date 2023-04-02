@@ -15,11 +15,11 @@ class WebConference : public Gtk::Window
 {
 public:
     //WebConference constructor
-    //server -> server_or_client == 1 | otherwise -> client
+    //server -> isServer == 1 | otherwise -> client
     //if client, 
-    WebConference(int server_or_client, char* server_IP_address = NULL)
+    WebConference(int isServer, char* server_IP_address = NULL)
     {
-        this->server_or_client = server_or_client;
+        this->isServer = isServer;
         this->server_IP_address = server_IP_address;
 
         setHierarchy();
@@ -27,14 +27,14 @@ public:
         setBehaviour();
         
         std::string asciiWaiting;
-        if(server_or_client == 1)
+        if(isServer == 1)
             asciiWaiting = getWaiting();
         else
             asciiWaiting = getEntering();
 
         m_buffer->set_text(asciiWaiting);
 
-        if(server_or_client == 1){
+        if(isServer == 1){
             receiving = true;
             t2 = std::thread(receiveFromClient, &m_ascii_text, &m_dispatcher, &receiving);
             sending = true;
@@ -74,7 +74,7 @@ private:
     Glib::RefPtr<Gtk::TextBuffer> m_buffer;
     
     bool receiving = false, sending = false;
-    int server_or_client;
+    int isServer;
     const char* server_IP_address;
 
 };
@@ -164,7 +164,5 @@ void WebConference::setStyle(){
     m_dispatcher.connect([this](){ 
         m_buffer->set_text(m_ascii_text); 
     });
-
-
 }
 

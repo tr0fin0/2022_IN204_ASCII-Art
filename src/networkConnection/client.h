@@ -18,6 +18,8 @@
 #include <string>
 #include <cstring>
 
+// #include "../GUI/dimensions.h"
+
 
 #include "../converters/VideoConverter.h"
 
@@ -43,19 +45,19 @@ void sendToServer(const char *server_IP_address, bool *sending){
         cap.read(img);
         c.setImage(img);
         c.convertGrayScale();
-        c.resize(50, 50);
+        c.resize(imageWidth, imageHeight);
 
         //enviando para server
-        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), 2500, recipient, server_receive_port) != sf::Socket::Done)
+        if (socket.send((char*)c.parallelConvert(c.getImage(), 1, 2).get(), bufferSize, recipient, server_receive_port) != sf::Socket::Done)
         {
             std::cout<<"Error in sending to " << recipient.toString() <<"\n";;        
-        }        
+        }
     }
     std::cout << "client sending saiu\n";
 }
 
 void receiveFromServer(const char* server_IP_address, std::string *m_ascii_text, Glib::Dispatcher *m_dispatcher, bool *receiving){
-    char buffer[2500];
+    char buffer[bufferSize];
     std::size_t received;
     unsigned short server_sender_port;
 

@@ -282,7 +282,7 @@ void MainWindow::buttonConnect_clicked()
   }
   else if (isValidIpAddress(stringIP_target))
   {
-    WebConference *m_new_window = new WebConference(2, IP_target);
+    WebConference *m_new_window = new WebConference(0, IP_target);
   }
   else
   {
